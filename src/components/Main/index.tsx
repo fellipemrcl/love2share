@@ -13,7 +13,7 @@ const Main = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline">Criar novo grupo</Button>
+        <Button variant="outline">+ Criar novo grupo</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
