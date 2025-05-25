@@ -11,25 +11,25 @@ const Header = () => {
               href="/about"
               className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
             >
-              Home
+              Pagina inicial
             </Link>
             <Link
               href="/contact"
               className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
             >
-              Contact
+              Encontrar grupos
             </Link>
             <Link
               href="/services"
               className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
             >
-              Services
+              Meus grupos
             </Link>
             <Link
               href="/blog"
               className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
             >
-              Blog
+              Ajuda
             </Link>
           </div>
         </nav>
