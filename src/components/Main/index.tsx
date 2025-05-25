@@ -12,10 +12,8 @@ import {
 const Main = () => {
   return (
     <Dialog>
-      <DialogTrigger>
-        <Button className="" variant="default">
-          Novo grupo
-        </Button>
+      <DialogTrigger asChild>
+        <Button variant="outline">Criar novo grupo</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
