@@ -1,5 +1,13 @@
 import Link from "next/link";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { Button } from "@/components/ui/button";
+import {
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  SignUpButton,
+  UserButton,
+} from "@clerk/nextjs";
 
 const Header = () => {
   return (
@@ -33,7 +41,22 @@ const Header = () => {
             </Link>
           </div>
         </nav>
-        <ThemeToggle />
+        <div className="flex items-center gap-4">
+          <SignedOut>
+            <SignInButton>
+              <Button variant="outline">Entrar</Button>
+            </SignInButton>
+            <SignUpButton>
+              <Button className="bg-[#6c47ff] hover:bg-[#5a3ee6] text-white">
+                Cadastrar
+              </Button>
+            </SignUpButton>
+          </SignedOut>
+          <SignedIn>
+            <UserButton />
+          </SignedIn>
+          <ThemeToggle />
+        </div>
       </div>
     </header>
   );
