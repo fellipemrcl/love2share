@@ -30,6 +30,9 @@ const formSchema = z.object({
   streamingId: z.string().min(1, {
     message: "Selecione um serviço de streaming.",
   }),
+  maxMembers: z.number().min(2, {
+    message: "O grupo deve ter pelo menos 2 membros (incluindo você).",
+  }),
 })
 
 type FormData = z.infer<typeof formSchema>
@@ -61,6 +64,7 @@ export function CreateGroupForm({ onSubmit, isSubmitting = false }: CreateGroupF
     resolver: zodResolver(formSchema),
     defaultValues: {
       streamingId: "",
+      maxMembers: 2,
     },
   })
 
@@ -90,6 +94,11 @@ export function CreateGroupForm({ onSubmit, isSubmitting = false }: CreateGroupF
       const userName = user?.firstName || user?.username || "Usuário";
       const groupName = `Grupo de ${streaming.name} de ${userName}`;
       setGeneratedGroupName(groupName);
+      
+      // Resetar o número de membros para o mínimo quando trocar de streaming
+      if (form.getValues('maxMembers') > streaming.maxUsers) {
+        form.setValue('maxMembers', Math.min(streaming.maxUsers, 2));
+      }
     }
   };
 
@@ -134,9 +143,6 @@ export function CreateGroupForm({ onSubmit, isSubmitting = false }: CreateGroupF
                   )}
                 </SelectContent>
               </Select>
-              <FormDescription>
-                Escolha o serviço de streaming que deseja compartilhar.
-              </FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -163,6 +169,38 @@ export function CreateGroupForm({ onSubmit, isSubmitting = false }: CreateGroupF
                 O nome será gerado automaticamente como &quot;Grupo de {selectedStreaming.name} de [Seu Nome]&quot;
               </p>
             </div>
+
+            <FormField
+              control={form.control}
+              name="maxMembers"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Quantas vagas disponibilizar?</FormLabel>
+                  <Select onValueChange={(value) => field.onChange(parseInt(value))} value={field.value?.toString()}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Selecione o número total de membros" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {Array.from({ length: selectedStreaming.maxUsers - 1 }, (_, i) => {
+                        const memberCount = i + 2; // Começa em 2 (você + 1 pessoa)
+                        const availableSlots = memberCount - 1; // Vagas disponíveis (excluindo você)
+                        return (
+                          <SelectItem key={memberCount} value={memberCount.toString()}>
+                            {availableSlots} vaga{availableSlots !== 1 ? 's' : ''} ({memberCount} membros total)
+                          </SelectItem>
+                        );
+                      })}
+                    </SelectContent>
+                  </Select>
+                  <FormDescription>
+                    Você já conta como 1 membro. Selecione quantas vagas adicionais deseja disponibilizar.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </>
         )}
         
