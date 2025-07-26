@@ -3,6 +3,7 @@
 import { ThemeToggle } from "@/components/theme-toggle";
 import MainNavigationMenu from "@/components/NavigationMenu";
 import AuthButtons from "@/components/AuthButtons";
+import { AdminButton } from "@/components/AdminButton";
 
 const Header = () => {
   return (
@@ -10,6 +11,7 @@ const Header = () => {
       <div className="container flex h-14 items-center justify-between px-4 py-2">
         <MainNavigationMenu />
         <div className="flex items-center gap-4">
+          <AdminButton />
           <AuthButtons />
           <ThemeToggle />
         </div>
