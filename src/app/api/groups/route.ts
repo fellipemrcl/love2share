@@ -11,12 +11,19 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { streamingId } = body;
+    const { streamingId, maxMembers } = body;
 
     // Validação básica
     if (!streamingId) {
       return NextResponse.json(
         { error: "Streaming é obrigatório" },
+        { status: 400 }
+      );
+    }
+
+    if (!maxMembers || maxMembers < 2) {
+      return NextResponse.json(
+        { error: "Número de membros deve ser pelo menos 2" },
         { status: 400 }
       );
     }
@@ -50,6 +57,14 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Validar se o maxMembers não excede o limite do streaming
+    if (maxMembers > streaming.maxUsers) {
+      return NextResponse.json(
+        { error: `Número de membros não pode exceder ${streaming.maxUsers} para este streaming` },
+        { status: 400 }
+      );
+    }
+
     // Criar o grupo com os dados gerados automaticamente
     const userName = user.firstName || user.username || dbUser.name || "Usuário";
     const groupName = `Grupo de ${streaming.name} de ${userName}`;
@@ -59,6 +74,7 @@ export async function POST(request: NextRequest) {
       data: {
         name: groupName,
         description: groupDescription,
+        maxMembers: maxMembers,
       },
     });
 
