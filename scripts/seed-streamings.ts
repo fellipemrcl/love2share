@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from '../src/app/generated/prisma'
 
 const prisma = new PrismaClient()
 
@@ -58,11 +58,18 @@ async function main() {
   ]
 
   for (const streaming of streamings) {
-    await prisma.streaming.upsert({
+    const existingStreaming = await prisma.streaming.findFirst({
       where: { name: streaming.name },
-      update: {},
-      create: streaming,
     })
+
+    if (!existingStreaming) {
+      await prisma.streaming.create({
+        data: streaming,
+      })
+      console.log(`✓ Streaming ${streaming.name} criado`)
+    } else {
+      console.log(`- Streaming ${streaming.name} já existe`)
+    }
   }
 
   console.log('Streamings criados com sucesso!')

@@ -24,6 +24,49 @@ export interface UpdateStreamingRequest {
   isActive?: boolean;
 }
 
+// Enum de roles para grupos de streaming
+export enum StreamingGroupRole {
+  OWNER = 'OWNER',
+  ADMIN = 'ADMIN',
+  MEMBER = 'MEMBER'
+}
+
+// Tipos para usuários
+export interface UserResponse {
+  id: string;
+  name: string | null;
+  email: string;
+}
+
+// Tipos para grupos de streaming
+export interface StreamingGroupUserResponse {
+  id: string;
+  userId: string;
+  role: StreamingGroupRole;
+  user: UserResponse;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface StreamingGroupResponse {
+  id: string;
+  name: string;
+  description: string | null;
+  maxMembers: number;
+  createdById: string;
+  createdBy: UserResponse;
+  createdAt: Date;
+  updatedAt: Date;
+  streamingGroupUsers: StreamingGroupUserResponse[];
+  userRole?: StreamingGroupRole;
+  isOwner?: boolean;
+  isAdmin?: boolean;
+  _count?: {
+    streamingGroupUsers: number;
+    streamingGroupStreamings: number;
+  };
+}
+
 export interface StreamingResponse {
   id: string;
   name: string;

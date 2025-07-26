@@ -9,6 +9,13 @@ export async function GET() {
 
     const groups = await prisma.streamingGroup.findMany({
       include: {
+        createdBy: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+          },
+        },
         streamingGroupUsers: {
           include: {
             user: true,
@@ -48,7 +55,7 @@ export async function POST(request: NextRequest) {
     await requireAdmin();
 
     const body = await request.json();
-    const { name, description, maxMembers } = body;
+    const { name, description, maxMembers, createdById } = body;
 
     if (!name || !maxMembers) {
       return NextResponse.json(
@@ -64,13 +71,45 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Se não foi especificado um criador, usar o admin atual
+    let finalCreatedById = createdById;
+    if (!finalCreatedById) {
+      const { currentUser } = await import("@clerk/nextjs/server");
+      const user = await currentUser();
+      
+      if (!user) {
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      }
+
+      // Verificar se o usuário admin existe no banco, se não criar
+      let dbUser = await prisma.user.findUnique({
+        where: { clerkId: user.id },
+      });
+
+      if (!dbUser) {
+        dbUser = await prisma.user.create({
+          data: {
+            clerkId: user.id,
+            email: user.emailAddresses[0]?.emailAddress || "",
+            name: user.firstName && user.lastName 
+              ? `${user.firstName} ${user.lastName}` 
+              : user.firstName || user.username || "Admin",
+          },
+        });
+      }
+      
+      finalCreatedById = dbUser.id;
+    }
+
     const group = await prisma.streamingGroup.create({
       data: {
         name,
         description: description || null,
         maxMembers,
+        createdById: finalCreatedById,
       },
       include: {
+        createdBy: true,
         streamingGroupUsers: {
           include: {
             user: true,

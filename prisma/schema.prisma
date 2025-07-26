@@ -15,6 +15,7 @@ model User {
   name                  String?
   streamingGroupUsers   StreamingGroupUser[]
   ownedStreamingAccounts StreamingGroupStreaming[]
+  createdGroups         StreamingGroup[]      @relation("GroupCreator")
 }
 
 model StreamingGroup {
@@ -22,6 +23,8 @@ model StreamingGroup {
   name                  String
   description           String?
   maxMembers            Int                   @default(2)
+  createdById           String
+  createdBy             User                  @relation("GroupCreator", fields: [createdById], references: [id])
   createdAt             DateTime              @default(now())
   updatedAt             DateTime              @updatedAt
   streamingGroupUsers   StreamingGroupUser[]
@@ -34,10 +37,17 @@ model StreamingGroupUser {
   streamingGroupId      String
   user                  User           @relation(fields: [userId], references: [id])
   userId                String
+  role                  StreamingGroupRole @default(MEMBER)
   createdAt             DateTime       @default(now())
   updatedAt             DateTime       @updatedAt
 
   @@unique([streamingGroupId, userId])
+}
+
+enum StreamingGroupRole {
+  OWNER
+  ADMIN
+  MEMBER
 }
 
 model Streaming {

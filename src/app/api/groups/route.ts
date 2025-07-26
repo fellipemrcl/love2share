@@ -75,14 +75,16 @@ export async function POST(request: NextRequest) {
         name: groupName,
         description: groupDescription,
         maxMembers: maxMembers,
+        createdById: dbUser.id,
       },
     });
 
-    // Adicionar o usuário como membro do grupo
+    // Adicionar o usuário como dono do grupo
     await prisma.streamingGroupUser.create({
       data: {
         streamingGroupId: group.id,
         userId: dbUser.id,
+        role: 'OWNER',
       },
     });
 
@@ -119,14 +121,51 @@ export async function GET() {
         userId: dbUser.id,
       },
       include: {
-        streamingGroup: true,
+        streamingGroup: {
+          include: {
+            createdBy: {
+              select: {
+                id: true,
+                name: true,
+                email: true,
+              },
+            },
+            streamingGroupUsers: {
+              include: {
+                user: {
+                  select: {
+                    id: true,
+                    name: true,
+                    email: true,
+                  },
+                },
+              },
+            },
+            streamingGroupStreamings: {
+              include: {
+                streaming: true,
+              },
+            },
+            _count: {
+              select: {
+                streamingGroupUsers: true,
+                streamingGroupStreamings: true,
+              },
+            },
+          },
+        },
       },
       orderBy: {
         createdAt: 'desc',
       },
     });
 
-    const groups = userGroups.map(ug => ug.streamingGroup);
+    const groups = userGroups.map(ug => ({
+      ...ug.streamingGroup,
+      userRole: ug.role,
+      isOwner: ug.role === 'OWNER',
+      isAdmin: ug.role === 'ADMIN' || ug.role === 'OWNER',
+    }));
 
     return NextResponse.json({ groups });
   } catch (error) {
