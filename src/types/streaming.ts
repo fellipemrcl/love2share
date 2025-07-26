@@ -39,6 +39,12 @@ export interface StreamingResponse {
   updatedAt: Date;
 }
 
+// Interface extendida com cálculos de preço (calculados dinamicamente)
+export interface StreamingWithPricing extends StreamingResponse {
+  pricePerScreen: number | null;
+  isValidPricing: boolean;
+}
+
 export interface StreamingWithCount extends StreamingResponse {
   _count: {
     streamingGroupStreamings: number;
