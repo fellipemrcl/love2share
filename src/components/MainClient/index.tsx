@@ -18,7 +18,7 @@ const MainClient = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleCreateGroup = async (values: { streamingId: string }) => {
+  const handleCreateGroup = async (values: { streamingId: string; maxMembers: number }) => {
     try {
       setIsSubmitting(true);
       console.log("Criando grupo:", values);
