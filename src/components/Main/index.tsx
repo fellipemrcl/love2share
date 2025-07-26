@@ -1,15 +1,7 @@
 import { currentUser } from "@clerk/nextjs/server";
 import { SignInButton } from "@clerk/nextjs";
 import { Button } from "../ui/button";
-
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import MainClient from "../MainClient";
 
 const Main = async () => {
   const user = await currentUser();
@@ -27,22 +19,7 @@ const Main = async () => {
     );
   }
 
-  return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button variant="outline">+ Criar novo grupo</Button>
-      </DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Criar novo grupo de {user.firstName}</DialogTitle>
-          <DialogDescription>
-            This action cannot be undone. This will permanently delete your
-            account and remove your data from our servers.
-          </DialogDescription>
-        </DialogHeader>
-      </DialogContent>
-    </Dialog>
-  );
+  return <MainClient />;
 };
 
 export default Main;
