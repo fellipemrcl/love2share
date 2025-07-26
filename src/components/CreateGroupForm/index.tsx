@@ -24,6 +24,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { StreamingPriceInfo } from "@/components/StreamingPriceInfo"
 
 const formSchema = z.object({
   streamingId: z.string().min(1, {
@@ -143,28 +144,11 @@ export function CreateGroupForm({ onSubmit, isSubmitting = false }: CreateGroupF
 
         {selectedStreaming && (
           <>
-            <div className="space-y-4 p-4 bg-muted rounded-lg">
-              <h3 className="font-semibold text-sm">Informações do Streaming</h3>
-              <div className="grid grid-cols-2 gap-4 text-sm">
-                <div>
-                  <span className="font-medium">Preço mensal:</span>
-                  <p className="text-muted-foreground">
-                    {selectedStreaming.monthlyPrice 
-                      ? `R$ ${selectedStreaming.monthlyPrice.toFixed(2)}`
-                      : 'Não informado'
-                    }
-                  </p>
-                </div>
-                <div>
-                  <span className="font-medium">Máx. usuários:</span>
-                  <p className="text-muted-foreground">{selectedStreaming.maxUsers}</p>
-                </div>
-                <div>
-                  <span className="font-medium">Telas simultâneas:</span>
-                  <p className="text-muted-foreground">{selectedStreaming.maxSimultaneousScreens}</p>
-                </div>
-              </div>
-            </div>
+            <StreamingPriceInfo 
+              monthlyPrice={selectedStreaming.monthlyPrice}
+              maxSimultaneousScreens={selectedStreaming.maxSimultaneousScreens}
+              maxUsers={selectedStreaming.maxUsers}
+            />
 
             <div className="space-y-2">
               <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
