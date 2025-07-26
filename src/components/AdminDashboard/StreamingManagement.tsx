@@ -217,7 +217,7 @@ export function StreamingManagement() {
         <CardContent>
           <div className="space-y-4">
             <div className="flex justify-end">
-              <Button onClick={handleAddStreaming}>Adicionar Novo Streaming</Button>
+              <Button onClick={handleAddStreaming} className="cursor-pointer">Adicionar Novo Streaming</Button>
             </div>
             
             {streamings.length === 0 ? (
@@ -257,6 +257,7 @@ export function StreamingManagement() {
                         size="sm"
                         onClick={() => toggleStreamingStatus(streaming.id, !streaming.isActive)}
                         disabled={loading}
+                        className="cursor-pointer"
                       >
                         {streaming.isActive ? 'Desativar' : 'Ativar'}
                       </Button>
@@ -264,6 +265,7 @@ export function StreamingManagement() {
                         variant="outline" 
                         size="sm"
                         onClick={() => handleEditStreaming(streaming)}
+                        className="cursor-pointer"
                       >
                         Editar
                       </Button>
@@ -285,8 +287,8 @@ export function StreamingManagement() {
               Preencha os dados do novo serviço de streaming
             </DialogDescription>
           </DialogHeader>
-          <div className="space-y-4">
-            <div>
+          <div className="space-y-6">
+            <div className="space-y-2">
               <Label htmlFor="name">Nome</Label>
               <Input
                 id="name"
@@ -295,7 +297,7 @@ export function StreamingManagement() {
                 placeholder="Ex: Netflix"
               />
             </div>
-            <div>
+            <div className="space-y-2">
               <Label htmlFor="platform">Plataforma</Label>
               <Input
                 id="platform"
@@ -304,7 +306,34 @@ export function StreamingManagement() {
                 placeholder="Ex: Netflix"
               />
             </div>
-            <div>
+            <div className="space-y-2">
+              <Label htmlFor="description">Descrição</Label>
+              <Input
+                id="description"
+                value={formData.description}
+                onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
+                placeholder="Descrição do serviço"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="logoUrl">URL do Logo</Label>
+              <Input
+                id="logoUrl"
+                value={formData.logoUrl}
+                onChange={(e) => setFormData(prev => ({ ...prev, logoUrl: e.target.value }))}
+                placeholder="https://example.com/logo.png"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="websiteUrl">URL do Website</Label>
+              <Input
+                id="websiteUrl"
+                value={formData.websiteUrl}
+                onChange={(e) => setFormData(prev => ({ ...prev, websiteUrl: e.target.value }))}
+                placeholder="https://example.com"
+              />
+            </div>
+            <div className="space-y-2">
               <Label htmlFor="monthlyPrice">Preço Mensal (R$)</Label>
               <Input
                 id="monthlyPrice"
@@ -315,7 +344,7 @@ export function StreamingManagement() {
                 placeholder="45.90"
               />
             </div>
-            <div>
+            <div className="space-y-2">
               <Label htmlFor="maxUsers">Máximo de Usuários</Label>
               <Input
                 id="maxUsers"
@@ -324,15 +353,24 @@ export function StreamingManagement() {
                 onChange={(e) => setFormData(prev => ({ ...prev, maxUsers: e.target.value }))}
               />
             </div>
+            <div className="space-y-2">
+              <Label htmlFor="maxSimultaneousScreens">Máximo de Telas Simultâneas</Label>
+              <Input
+                id="maxSimultaneousScreens"
+                type="number"
+                value={formData.maxSimultaneousScreens}
+                onChange={(e) => setFormData(prev => ({ ...prev, maxSimultaneousScreens: e.target.value }))}
+              />
+            </div>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => {
               setIsAddDialogOpen(false)
               resetForm()
-            }}>
+            }} className="cursor-pointer">
               Cancelar
             </Button>
-            <Button onClick={handleSaveStreaming} disabled={loading}>
+            <Button onClick={handleSaveStreaming} disabled={loading} className="cursor-pointer">
               Adicionar
             </Button>
           </DialogFooter>
@@ -348,8 +386,8 @@ export function StreamingManagement() {
               Modificar dados do serviço de streaming
             </DialogDescription>
           </DialogHeader>
-          <div className="space-y-4">
-            <div>
+          <div className="space-y-6">
+            <div className="space-y-2">
               <Label htmlFor="edit-name">Nome</Label>
               <Input
                 id="edit-name"
@@ -357,7 +395,7 @@ export function StreamingManagement() {
                 onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
               />
             </div>
-            <div>
+            <div className="space-y-2">
               <Label htmlFor="edit-platform">Plataforma</Label>
               <Input
                 id="edit-platform"
@@ -365,7 +403,34 @@ export function StreamingManagement() {
                 onChange={(e) => setFormData(prev => ({ ...prev, platform: e.target.value }))}
               />
             </div>
-            <div>
+            <div className="space-y-2">
+              <Label htmlFor="edit-description">Descrição</Label>
+              <Input
+                id="edit-description"
+                value={formData.description}
+                onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
+                placeholder="Descrição do serviço"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="edit-logoUrl">URL do Logo</Label>
+              <Input
+                id="edit-logoUrl"
+                value={formData.logoUrl}
+                onChange={(e) => setFormData(prev => ({ ...prev, logoUrl: e.target.value }))}
+                placeholder="https://example.com/logo.png"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="edit-websiteUrl">URL do Website</Label>
+              <Input
+                id="edit-websiteUrl"
+                value={formData.websiteUrl}
+                onChange={(e) => setFormData(prev => ({ ...prev, websiteUrl: e.target.value }))}
+                placeholder="https://example.com"
+              />
+            </div>
+            <div className="space-y-2">
               <Label htmlFor="edit-monthlyPrice">Preço Mensal (R$)</Label>
               <Input
                 id="edit-monthlyPrice"
@@ -375,7 +440,7 @@ export function StreamingManagement() {
                 onChange={(e) => setFormData(prev => ({ ...prev, monthlyPrice: e.target.value }))}
               />
             </div>
-            <div>
+            <div className="space-y-2">
               <Label htmlFor="edit-maxUsers">Máximo de Usuários</Label>
               <Input
                 id="edit-maxUsers"
@@ -384,15 +449,24 @@ export function StreamingManagement() {
                 onChange={(e) => setFormData(prev => ({ ...prev, maxUsers: e.target.value }))}
               />
             </div>
+            <div className="space-y-2">
+              <Label htmlFor="edit-maxSimultaneousScreens">Máximo de Telas Simultâneas</Label>
+              <Input
+                id="edit-maxSimultaneousScreens"
+                type="number"
+                value={formData.maxSimultaneousScreens}
+                onChange={(e) => setFormData(prev => ({ ...prev, maxSimultaneousScreens: e.target.value }))}
+              />
+            </div>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => {
               setIsEditDialogOpen(false)
               resetForm()
-            }}>
+            }} className="cursor-pointer">
               Cancelar
             </Button>
-            <Button onClick={handleSaveStreaming} disabled={loading}>
+            <Button onClick={handleSaveStreaming} disabled={loading} className="cursor-pointer">
               Salvar
             </Button>
           </DialogFooter>
