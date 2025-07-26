@@ -19,10 +19,11 @@ const updateStreamingSchema = z.object({
 // GET - Buscar um streaming específico por ID
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const { userId } = await auth();
+    const { id } = await params;
     
     if (!userId) {
       return NextResponse.json(
@@ -33,7 +34,7 @@ export async function GET(
 
     const streaming = await prisma.streaming.findUnique({
       where: {
-        id: params.id,
+        id,
       },
       include: {
         streamingGroupStreamings: {
@@ -74,10 +75,11 @@ export async function GET(
 // PUT - Atualizar um streaming específico
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const { userId } = await auth();
+    const { id } = await params;
     
     if (!userId) {
       return NextResponse.json(
@@ -105,7 +107,7 @@ export async function PUT(
 
     // Verificar se o streaming existe
     const existingStreaming = await prisma.streaming.findUnique({
-      where: { id: params.id },
+      where: { id },
     });
 
     if (!existingStreaming) {
@@ -120,7 +122,7 @@ export async function PUT(
       const duplicateCheck = await prisma.streaming.findFirst({
         where: {
           AND: [
-            { id: { not: params.id } },
+            { id: { not: id } },
             { name: data.name || existingStreaming.name },
             { platform: data.platform || existingStreaming.platform },
           ],
@@ -137,7 +139,7 @@ export async function PUT(
 
     // Atualizar o streaming
     const updatedStreaming = await prisma.streaming.update({
-      where: { id: params.id },
+      where: { id },
       data: {
         ...data,
         logoUrl: data.logoUrl === "" ? null : data.logoUrl,
@@ -158,10 +160,11 @@ export async function PUT(
 // DELETE - Deletar um streaming específico
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const { userId } = await auth();
+    const { id } = await params;
     
     if (!userId) {
       return NextResponse.json(
@@ -172,7 +175,7 @@ export async function DELETE(
 
     // Verificar se o streaming existe
     const existingStreaming = await prisma.streaming.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: {
         _count: {
           select: {
@@ -193,7 +196,7 @@ export async function DELETE(
     if (existingStreaming._count.streamingGroupStreamings > 0) {
       // Em vez de deletar, desativar o streaming
       const deactivatedStreaming = await prisma.streaming.update({
-        where: { id: params.id },
+        where: { id },
         data: { isActive: false },
       });
 
@@ -205,7 +208,7 @@ export async function DELETE(
 
     // Se não há dependências, deletar permanentemente
     await prisma.streaming.delete({
-      where: { id: params.id },
+      where: { id },
     });
 
     return NextResponse.json({
