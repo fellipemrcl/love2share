@@ -2,7 +2,32 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
-First, run the development server:
+### 1. Environment Variables
+
+Copy the example environment file and configure your variables:
+
+```bash
+cp .env.example .env.local
+```
+
+Update the `.env.local` file with your actual values:
+
+- **Database**: Configure your PostgreSQL connection
+- **Clerk Authentication**: Get your keys from [Clerk Dashboard](https://dashboard.clerk.com)
+  - `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`
+  - `CLERK_SECRET_KEY`
+  - `SIGNING_SECRET` (for webhooks)
+
+### 2. Database Setup
+
+Make sure your PostgreSQL database is running and run the Prisma migrations:
+
+```bash
+npx prisma migrate dev
+npx prisma generate
+```
+
+### 3. Run the Development Server
 
 ```bash
 npm run dev
@@ -20,6 +45,33 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Deploy on Vercel
+
+### Environment Variables Setup
+
+Before deploying, make sure to add all environment variables in the Vercel dashboard:
+
+1. Go to your project settings in Vercel
+2. Navigate to "Environment Variables"
+3. Add all variables from `.env.example`:
+   - `DATABASE_URL` - Your production database connection string
+   - `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` - Your Clerk publishable key
+   - `CLERK_SECRET_KEY` - Your Clerk secret key
+   - `SIGNING_SECRET` - Your Clerk webhook secret
+   - Other optional Clerk configuration variables
+
+### Database Configuration
+
+For production, you'll need a PostgreSQL database. You can use:
+- [Vercel Postgres](https://vercel.com/storage/postgres)
+- [Railway](https://railway.app)
+- [Supabase](https://supabase.com)
+- [PlanetScale](https://planetscale.com)
+
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
@@ -28,9 +80,3 @@ To learn more about Next.js, take a look at the following resources:
 - [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
