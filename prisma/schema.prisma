@@ -14,6 +14,7 @@ model User {
   email                 String                @unique
   name                  String?
   streamingGroupUsers   StreamingGroupUser[]
+  ownedStreamingAccounts StreamingGroupStreaming[]
 }
 
 model StreamingGroup {
@@ -23,6 +24,7 @@ model StreamingGroup {
   createdAt             DateTime              @default(now())
   updatedAt             DateTime              @updatedAt
   streamingGroupUsers   StreamingGroupUser[]
+  streamingGroupStreamings StreamingGroupStreaming[]
 }
 
 model StreamingGroupUser {
@@ -35,4 +37,39 @@ model StreamingGroupUser {
   updatedAt             DateTime       @updatedAt
 
   @@unique([streamingGroupId, userId])
+}
+
+model Streaming {
+  id                    String                @id @default(uuid())
+  name                  String
+  description           String?
+  platform              String                
+  logoUrl               String?
+  websiteUrl            String?
+  monthlyPrice          Float?
+  maxUsers              Int                   @default(1)
+  maxSimultaneousScreens Int                  @default(1) 
+  isActive              Boolean               @default(true)
+  createdAt             DateTime              @default(now())
+  updatedAt             DateTime              @updatedAt
+  streamingGroupStreamings StreamingGroupStreaming[]
+}
+
+model StreamingGroupStreaming {
+  id                    String         @id @default(uuid())
+  streamingGroup        StreamingGroup @relation(fields: [streamingGroupId], references: [id])
+  streamingGroupId      String
+  streaming             Streaming      @relation(fields: [streamingId], references: [id])
+  streamingId           String
+  accountEmail          String
+  accountPassword       String
+  isAccountOwner        Boolean        @default(false)
+  accountOwnerId        String?
+  accountOwner          User?          @relation(fields: [accountOwnerId], references: [id])
+  expiresAt             DateTime?
+  isActive              Boolean        @default(true)
+  createdAt             DateTime       @default(now())
+  updatedAt             DateTime       @updatedAt
+
+  @@unique([streamingGroupId, streamingId])
 }
