@@ -5,17 +5,19 @@ import prisma from "@/lib/prisma";
 // DELETE /api/admin/groups/[id]/members/[userId] - Remover membro específico do grupo
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string; userId: string } }
+  { params }: { params: Promise<{ id: string; userId: string }> }
 ) {
   try {
     await requireAdmin();
+
+    const { id, userId } = await params;
 
     // Verificar se o membro existe no grupo
     const member = await prisma.streamingGroupUser.findUnique({
       where: {
         streamingGroupId_userId: {
-          streamingGroupId: params.id,
-          userId: params.userId,
+          streamingGroupId: id,
+          userId: userId,
         },
       },
       include: {
@@ -34,8 +36,8 @@ export async function DELETE(
     await prisma.streamingGroupUser.delete({
       where: {
         streamingGroupId_userId: {
-          streamingGroupId: params.id,
-          userId: params.userId,
+          streamingGroupId: id,
+          userId: userId,
         },
       },
     });

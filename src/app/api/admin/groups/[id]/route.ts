@@ -5,13 +5,15 @@ import prisma from "@/lib/prisma";
 // GET /api/admin/groups/[id] - Buscar grupo específico
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     await requireAdmin();
 
+    const { id } = await params;
+
     const group = await prisma.streamingGroup.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: {
         streamingGroupUsers: {
           include: {
@@ -53,11 +55,12 @@ export async function GET(
 // PUT /api/admin/groups/[id] - Atualizar grupo
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     await requireAdmin();
 
+    const { id } = await params;
     const body = await request.json();
     const { name, description, maxMembers } = body;
 
@@ -77,7 +80,7 @@ export async function PUT(
 
     // Verificar se o grupo existe
     const existingGroup = await prisma.streamingGroup.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: {
         _count: {
           select: {
@@ -103,7 +106,7 @@ export async function PUT(
     }
 
     const updatedGroup = await prisma.streamingGroup.update({
-      where: { id: params.id },
+      where: { id },
       data: {
         name,
         description: description || null,
@@ -143,14 +146,16 @@ export async function PUT(
 // DELETE /api/admin/groups/[id] - Deletar grupo
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     await requireAdmin();
 
+    const { id } = await params;
+
     // Verificar se o grupo existe
     const existingGroup = await prisma.streamingGroup.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: {
         _count: {
           select: {
@@ -172,17 +177,17 @@ export async function DELETE(
     await prisma.$transaction(async (tx) => {
       // Remover todas as contas de streaming do grupo
       await tx.streamingGroupStreaming.deleteMany({
-        where: { streamingGroupId: params.id },
+        where: { streamingGroupId: id },
       });
 
       // Remover todos os usuários do grupo
       await tx.streamingGroupUser.deleteMany({
-        where: { streamingGroupId: params.id },
+        where: { streamingGroupId: id },
       });
 
       // Deletar o grupo
       await tx.streamingGroup.delete({
-        where: { id: params.id },
+        where: { id },
       });
     });
 
