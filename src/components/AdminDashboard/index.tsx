@@ -6,7 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Badge } from '@/components/ui/badge'
 import { UserStats } from '../AdminDashboard/UserStats'
 import { StreamingManagement } from '../AdminDashboard/StreamingManagement'
-import { GroupsOverview } from '../AdminDashboard/GroupsOverview'
+import GroupManagement from '../AdminDashboard/GroupManagement'
 import { SystemHealth } from '../AdminDashboard/SystemHealth'
 import { AdminScripts } from '../AdminDashboard/AdminScripts'
 
@@ -155,7 +155,7 @@ export default function AdminDashboard() {
         </TabsContent>
 
         <TabsContent value="groups">
-          <GroupsOverview />
+          <GroupManagement />
         </TabsContent>
 
         <TabsContent value="scripts">
