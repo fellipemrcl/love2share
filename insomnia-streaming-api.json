@@ -1,0 +1,316 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2025-07-26T12:43:55.000Z",
+  "__export_source": "insomnia.desktop.app:v2023.5.8",
+  "resources": [
+    {
+      "_id": "req_streaming_list",
+      "parentId": "fld_streaming",
+      "modified": 1690372435000,
+      "created": 1690372435000,
+      "url": "{{ _.base_url }}/api/streaming",
+      "name": "1. Listar Streamings",
+      "description": "Lista todos os streamings ativos com contadores de grupos",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.clerk_token }}"
+      },
+      "metaSortKey": -1690372435000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_streaming_create",
+      "parentId": "fld_streaming",
+      "modified": 1690372435001,
+      "created": 1690372435001,
+      "url": "{{ _.base_url }}/api/streaming",
+      "name": "2. Criar Streaming",
+      "description": "Cria um novo serviço de streaming",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Netflix Premium\",\n  \"description\": \"Plano Premium com 4 telas simultâneas e qualidade 4K\",\n  \"platform\": \"Netflix\",\n  \"logoUrl\": \"https://assets.nflxext.com/ffe/siteui/common/icons/nficon2023.ico\",\n  \"websiteUrl\": \"https://www.netflix.com\",\n  \"monthlyPrice\": 55.90,\n  \"maxUsers\": 4,\n  \"maxSimultaneousScreens\": 4,\n  \"isActive\": true\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.clerk_token }}"
+      },
+      "metaSortKey": -1690372435001,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_streaming_create_disney",
+      "parentId": "fld_streaming",
+      "modified": 1690372435002,
+      "created": 1690372435002,
+      "url": "{{ _.base_url }}/api/streaming",
+      "name": "3. Criar Disney+",
+      "description": "Exemplo de criação do Disney+",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Disney+ Premium\",\n  \"description\": \"Streaming com conteúdo Disney, Marvel, Star Wars e National Geographic\",\n  \"platform\": \"Disney+\",\n  \"logoUrl\": \"https://cnbl-cdn.bamgrid.com/assets/7ecc8bcb60ad77193058d63e321bd21cbac2fc67281dbd9f4cdd8f886bfa2c65/original\",\n  \"websiteUrl\": \"https://www.disneyplus.com\",\n  \"monthlyPrice\": 33.90,\n  \"maxUsers\": 4,\n  \"maxSimultaneousScreens\": 4,\n  \"isActive\": true\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.clerk_token }}"
+      },
+      "metaSortKey": -1690372435002,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_streaming_get_by_id",
+      "parentId": "fld_streaming",
+      "modified": 1690372435003,
+      "created": 1690372435003,
+      "url": "{{ _.base_url }}/api/streaming/{{ _.streaming_id }}",
+      "name": "4. Buscar Streaming por ID",
+      "description": "Busca um streaming específico com detalhes dos grupos",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.clerk_token }}"
+      },
+      "metaSortKey": -1690372435003,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_streaming_update",
+      "parentId": "fld_streaming",
+      "modified": 1690372435004,
+      "created": 1690372435004,
+      "url": "{{ _.base_url }}/api/streaming/{{ _.streaming_id }}",
+      "name": "5. Atualizar Streaming",
+      "description": "Atualiza as informações de um streaming",
+      "method": "PUT",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Netflix Premium HD\",\n  \"monthlyPrice\": 59.90,\n  \"maxSimultaneousScreens\": 6,\n  \"description\": \"Plano Premium atualizado com mais telas\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.clerk_token }}"
+      },
+      "metaSortKey": -1690372435004,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_streaming_delete",
+      "parentId": "fld_streaming",
+      "modified": 1690372435005,
+      "created": 1690372435005,
+      "url": "{{ _.base_url }}/api/streaming/{{ _.streaming_id }}",
+      "name": "6. Deletar Streaming",
+      "description": "Deleta ou desativa um streaming",
+      "method": "DELETE",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.clerk_token }}"
+      },
+      "metaSortKey": -1690372435005,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_streaming_validation_test",
+      "parentId": "fld_streaming",
+      "modified": 1690372435006,
+      "created": 1690372435006,
+      "url": "{{ _.base_url }}/api/streaming",
+      "name": "7. Teste Validação (Erro)",
+      "description": "Testa validação com dados inválidos",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"\",\n  \"platform\": \"\",\n  \"logoUrl\": \"url-invalida\",\n  \"monthlyPrice\": -10,\n  \"maxUsers\": 0\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.clerk_token }}"
+      },
+      "metaSortKey": -1690372435006,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_streaming_duplicate_test",
+      "parentId": "fld_streaming",
+      "modified": 1690372435007,
+      "created": 1690372435007,
+      "url": "{{ _.base_url }}/api/streaming",
+      "name": "8. Teste Duplicata (Erro)",
+      "description": "Testa criação de streaming duplicado",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Netflix Premium\",\n  \"platform\": \"Netflix\",\n  \"monthlyPrice\": 55.90,\n  \"maxUsers\": 4,\n  \"maxSimultaneousScreens\": 4\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.clerk_token }}"
+      },
+      "metaSortKey": -1690372435007,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "fld_streaming",
+      "parentId": "wrk_love2share",
+      "modified": 1690372435000,
+      "created": 1690372435000,
+      "name": "Streaming API",
+      "description": "Endpoints para gerenciar serviços de streaming",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1690372435000,
+      "_type": "request_group"
+    },
+    {
+      "_id": "wrk_love2share",
+      "parentId": null,
+      "modified": 1690372435000,
+      "created": 1690372435000,
+      "name": "Love2Share API",
+      "description": "API para compartilhamento de serviços de streaming",
+      "scope": "collection",
+      "_type": "workspace"
+    },
+    {
+      "_id": "env_base",
+      "parentId": "wrk_love2share",
+      "modified": 1690372435000,
+      "created": 1690372435000,
+      "name": "Base Environment",
+      "data": {
+        "base_url": "http://localhost:3000",
+        "clerk_token": "YOUR_CLERK_JWT_TOKEN_HERE",
+        "streaming_id": "STREAMING_ID_FROM_CREATE_RESPONSE"
+      },
+      "dataPropertyOrder": {
+        "&": [
+          "base_url",
+          "clerk_token",
+          "streaming_id"
+        ]
+      },
+      "color": null,
+      "isPrivate": false,
+      "metaSortKey": 1690372435000,
+      "_type": "environment"
+    }
+  ]
+}
