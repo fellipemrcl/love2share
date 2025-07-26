@@ -21,6 +21,7 @@ model StreamingGroup {
   id                    String                @id @default(uuid())
   name                  String
   description           String?
+  maxMembers            Int                   @default(2)
   createdAt             DateTime              @default(now())
   updatedAt             DateTime              @updatedAt
   streamingGroupUsers   StreamingGroupUser[]
