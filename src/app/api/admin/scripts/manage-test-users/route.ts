@@ -45,9 +45,13 @@ export async function POST() {
       }
     })
 
-    // Separar usuários de teste (que têm clerkId começando com "test_")
-    const testUsers = users.filter(user => user.clerkId.startsWith('test_'))
-    const realUsers = users.filter(user => !user.clerkId.startsWith('test_'))
+    // Separar usuários de teste (que têm clerkId começando com "test_" OU email começando com "test-love2share")
+    const testUsers = users.filter(user => 
+      user.clerkId.startsWith('test_') || user.email.startsWith('test-love2share')
+    )
+    const realUsers = users.filter(user => 
+      !user.clerkId.startsWith('test_') && !user.email.startsWith('test-love2share')
+    )
 
     // Estatísticas gerais
     const stats = {
@@ -64,7 +68,7 @@ export async function POST() {
       name: user.name,
       email: user.email,
       clerkId: user.clerkId,
-      isTestUser: true,
+      isTestUser: user.clerkId.startsWith('test_') || user.email.startsWith('test-love2share'),
       statistics: {
         groupsAsMember: user._count.streamingGroupUsers,
         groupsCreated: user._count.createdGroups,

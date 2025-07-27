@@ -6,12 +6,21 @@ export async function POST() {
   try {
     await requireAdmin()
 
-    // Buscar usuários de teste (que têm clerkId começando com "test_")
+    // Buscar usuários de teste (que têm clerkId começando com "test_" OU email começando com "test-love2share")
     const testUsers = await prisma.user.findMany({
       where: {
-        clerkId: {
-          startsWith: 'test_'
-        }
+        OR: [
+          {
+            clerkId: {
+              startsWith: 'test_'
+            }
+          },
+          {
+            email: {
+              startsWith: 'test-love2share'
+            }
+          }
+        ]
       },
       include: {
         streamingGroupUsers: {
@@ -128,9 +137,18 @@ export async function POST() {
     // Finalmente, remover os usuários de teste
     const removedUsersCount = await prisma.user.deleteMany({
       where: {
-        clerkId: {
-          startsWith: 'test_'
-        }
+        OR: [
+          {
+            clerkId: {
+              startsWith: 'test_'
+            }
+          },
+          {
+            email: {
+              startsWith: 'test-love2share'
+            }
+          }
+        ]
       }
     })
 

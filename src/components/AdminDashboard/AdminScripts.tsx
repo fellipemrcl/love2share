@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Loader2, Play, Database, Trash2, TestTube, Users, Shield, Download, UserPlus, UsersRound, UserCog, Zap } from 'lucide-react'
+import { Loader2, Play, Database, Trash2, TestTube, Users, Shield, Download, UserPlus, UsersRound, UserCog, Zap, RefreshCw, CheckCircle } from 'lucide-react'
 import { RemoveUserForm } from './RemoveUserForm'
 
 interface ScriptResult {
@@ -60,7 +60,7 @@ export function AdminScripts() {
     {
       id: 'create-test-user',
       name: 'Criar Usuário de Teste',
-      description: 'Gera um usuário de teste com dados aleatórios usando Faker',
+      description: 'Gera um usuário de teste com email iniciando em "test-love2share"',
       icon: UserPlus,
       endpoint: 'create-test-user',
       variant: 'default' as const,
@@ -112,6 +112,15 @@ export function AdminScripts() {
       category: 'Dados'
     },
     {
+      id: 'validate-test-users',
+      name: 'Validar Usuários de Teste',
+      description: 'Verifica se todos os usuários seguem o padrão "test-love2share"',
+      icon: CheckCircle,
+      endpoint: 'validate-test-users',
+      variant: 'outline' as const,
+      category: 'Diagnóstico'
+    },
+    {
       id: 'test-database',
       name: 'Testar Banco de Dados',
       description: 'Verifica conexão e lista dados atuais do banco',
@@ -141,11 +150,20 @@ export function AdminScripts() {
     {
       id: 'clean-test-users',
       name: 'Limpar Usuários de Teste',
-      description: 'Remove TODOS os usuários de teste e suas associações (cuidado!)',
+      description: 'Remove usuários com email/clerkId "test-love2share" e suas associações',
       icon: Trash2,
       endpoint: 'clean-test-users',
       variant: 'destructive' as const,
       category: 'Limpeza'
+    },
+    {
+      id: 'migrate-test-users',
+      name: 'Migrar Usuários de Teste',
+      description: 'Atualiza emails para o padrão "test-love2share"',
+      icon: RefreshCw,
+      endpoint: 'migrate-test-users',
+      variant: 'outline' as const,
+      category: 'Manutenção'
     },
     {
       id: 'reset-streaming-status',
