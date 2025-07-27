@@ -260,7 +260,7 @@ export function StreamingManagement() {
                         </div>
                         <p className="text-sm text-muted-foreground">{streaming.platform}</p>
                         <p className="text-xs text-muted-foreground">
-                          {streaming.monthlyPrice ? `R$ ${streaming.monthlyPrice.toFixed(2)}/mês` : 'Preço não definido'} • 
+                            {streaming.monthlyPrice ? `R$ ${streaming.monthlyPrice.toFixed(2)}/mês` : 'Preço não definido'} •{' '}
                           {streaming.maxUsers} usuários • {streaming.maxSimultaneousScreens} telas
                         </p>
                       </div>
