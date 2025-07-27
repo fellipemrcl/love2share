@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Loader2, Play, Database, Trash2, TestTube, Users, Shield, Download } from 'lucide-react'
+import { RemoveUserForm } from './RemoveUserForm'
 
 interface ScriptResult {
   success: boolean
@@ -191,6 +192,12 @@ export function AdminScripts() {
           </div>
         </div>
       ))}
+
+      {/* Formulário de Remoção de Usuário */}
+      <div className="space-y-3">
+        <h3 className="text-lg font-semibold text-foreground">Gerenciamento de Usuários</h3>
+        <RemoveUserForm />
+      </div>
 
       <Card>
         <CardHeader>
