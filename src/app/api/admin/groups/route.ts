@@ -20,6 +20,9 @@ export async function GET() {
           include: {
             user: true,
           },
+          orderBy: {
+            role: 'desc', // OWNER primeiro, depois ADMIN, depois MEMBER
+          },
         },
         streamingGroupStreamings: {
           include: {

@@ -308,15 +308,17 @@ export default function MyGroupsClient() {
                         </DialogContent>
                       </Dialog>
                     )}
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => leaveGroup(group.id)}
-                      disabled={leavingGroup === group.id}
-                      className="text-red-600 hover:text-red-700 hover:bg-red-50"
-                    >
-                      {leavingGroup === group.id ? "Saindo..." : "Sair"}
-                    </Button>
+                    {!group.isOwner && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => leaveGroup(group.id)}
+                        disabled={leavingGroup === group.id}
+                        className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                      >
+                        {leavingGroup === group.id ? "Saindo..." : "Sair"}
+                      </Button>
+                    )}
                   </div>
                 </div>
               </CardHeader>

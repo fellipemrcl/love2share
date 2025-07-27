@@ -32,6 +32,14 @@ export async function DELETE(
       );
     }
 
+    // Verificar se o membro é OWNER do grupo
+    if (member.role === 'OWNER') {
+      return NextResponse.json(
+        { error: "O dono do grupo não pode ser removido. Transfira a propriedade primeiro se necessário." },
+        { status: 403 }
+      );
+    }
+
     // Remover membro do grupo
     await prisma.streamingGroupUser.delete({
       where: {

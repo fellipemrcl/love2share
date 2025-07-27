@@ -55,6 +55,14 @@ export async function DELETE(request: NextRequest) {
       );
     }
 
+    // Verificar se é OWNER e há outros membros no grupo
+    if (membership.role === 'OWNER' && membership.streamingGroup._count.streamingGroupUsers > 1) {
+      return NextResponse.json(
+        { error: "Como dono do grupo, você não pode sair enquanto houver outros membros. Transfira a propriedade primeiro ou remova todos os membros." },
+        { status: 403 }
+      );
+    }
+
     // Verificar se é o único membro ou se é OWNER
     if (membership.streamingGroup._count.streamingGroupUsers === 1) {
       // Se é o único membro, deletar o grupo inteiro

@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Loader2, Plus, Edit, Trash2, Users, UserPlus, UserMinus, Eye, Calendar } from "lucide-react";
+import { Loader2, Plus, Edit, Trash2, Users, UserPlus, UserMinus, Eye, Calendar, Crown, Shield } from "lucide-react";
 
 interface User {
   id: string;
@@ -34,6 +34,7 @@ interface StreamingGroupStreaming {
 
 interface StreamingGroupUser {
   id: string;
+  role: string;
   user: User;
   createdAt: string;
 }
@@ -573,8 +574,16 @@ export default function GroupManagement() {
                   <div className="space-y-2">
                     {selectedGroup.streamingGroupUsers.map((member) => (
                       <div key={member.id} className="flex items-center justify-between p-2 border rounded">
-                        <div>
-                          <p className="font-medium">{member.user.name || "Sem nome"}</p>
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2">
+                            <p className="font-medium">{member.user.name || "Sem nome"}</p>
+                            {member.role === 'OWNER' && (
+                              <Crown className="h-4 w-4 text-yellow-600" />
+                            )}
+                            {member.role === 'ADMIN' && (
+                              <Shield className="h-4 w-4 text-blue-600" />
+                            )}
+                          </div>
                           <p className="text-sm text-muted-foreground">{member.user.email}</p>
                         </div>
                         <div className="flex items-center gap-2">
@@ -585,7 +594,7 @@ export default function GroupManagement() {
                             variant="outline"
                             size="sm"
                             onClick={() => handleRemoveMember(member.user.id)}
-                            disabled={submitting}
+                            disabled={submitting || member.role === 'OWNER'}
                             className="cursor-pointer"
                           >
                             <UserMinus className="h-4 w-4" />
