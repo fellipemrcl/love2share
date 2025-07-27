@@ -84,6 +84,15 @@ export function AdminScripts() {
       category: 'Limpeza'
     },
     {
+      id: 'clean-groups',
+      name: 'Apagar Todos os Grupos',
+      description: 'Remove TODOS os grupos, membros e streamings associados (cuidado!)',
+      icon: Trash2,
+      endpoint: 'clean-groups',
+      variant: 'destructive' as const,
+      category: 'Limpeza'
+    },
+    {
       id: 'reset-streaming-status',
       name: 'Ativar Todos os Streamings',
       description: 'Define todos os streamings como ativos',
