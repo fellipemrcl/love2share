@@ -137,7 +137,7 @@ export function CreateGroupForm({ onSubmit, isSubmitting = false }: CreateGroupF
                   ) : (
                     streamings.map((streaming) => (
                       <SelectItem key={streaming.id} value={streaming.id}>
-                        {streaming.name} ({streaming.platform})
+                        {streaming.name}
                       </SelectItem>
                     ))
                   )}

@@ -16,7 +16,7 @@ async function main() {
       maxSimultaneousScreens: 4,
     },
     {
-      name: 'Amazon Prime Video',
+      name: 'Prime Video',
       platform: 'Prime Video',
       description: 'Serviço de streaming da Amazon',
       logoUrl: 'https://logo.clearbit.com/amazon.com',
