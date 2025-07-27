@@ -106,7 +106,7 @@ export async function PUT(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { groupId, name, description, maxMembers } = body;
+    const { groupId, description, maxMembers } = body;
 
     if (!groupId) {
       return NextResponse.json(
@@ -187,7 +187,6 @@ export async function PUT(request: NextRequest) {
     const updatedGroup = await prisma.streamingGroup.update({
       where: { id: groupId },
       data: {
-        ...(name && { name }),
         ...(description !== undefined && { description }),
         ...(maxMembers && { maxMembers }),
       },

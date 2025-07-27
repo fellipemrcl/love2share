@@ -88,7 +88,7 @@ export default function MyGroupsClient() {
   const openEditDialog = (group: ManagedGroup) => {
     setEditingGroup(group);
     setEditForm({
-      name: group.name,
+      name: group.name, // Manter para não quebrar a interface, mas não será editável
       description: group.description || "",
       maxMembers: group.maxMembers,
     });
@@ -115,7 +115,8 @@ export default function MyGroupsClient() {
         },
         body: JSON.stringify({
           groupId: editingGroup.id,
-          ...editForm,
+          description: editForm.description,
+          maxMembers: editForm.maxMembers,
         }),
       });
 
@@ -235,14 +236,16 @@ export default function MyGroupsClient() {
               <CardHeader>
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
-                    <CardTitle className="text-lg flex items-center gap-2">
-                      {group.name}
-                      <Badge variant={getRoleBadgeVariant(group.userRole)} className="flex items-center gap-1">
+                    <div className="flex flex-col gap-2">
+                      <CardTitle className="text-lg">
+                        {group.name}
+                      </CardTitle>
+                      <Badge variant={getRoleBadgeVariant(group.userRole)} className="flex items-center gap-1 w-fit">
                         {getRoleIcon(group.userRole)}
                         {group.userRole}
                       </Badge>
-                    </CardTitle>
-                    <CardDescription className="mt-1">
+                    </div>
+                    <CardDescription className="mt-2">
                       Criado por {group.createdBy.name || group.createdBy.email}
                     </CardDescription>
                   </div>
@@ -266,14 +269,6 @@ export default function MyGroupsClient() {
                             </DialogDescription>
                           </DialogHeader>
                           <div className="space-y-4">
-                            <div>
-                              <Label htmlFor="name">Nome do Grupo</Label>
-                              <Input
-                                id="name"
-                                value={editForm.name}
-                                onChange={(e) => setEditForm(prev => ({ ...prev, name: e.target.value }))}
-                              />
-                            </div>
                             <div>
                               <Label htmlFor="description">Descrição</Label>
                               <Textarea
