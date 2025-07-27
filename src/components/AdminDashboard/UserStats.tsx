@@ -25,7 +25,7 @@ export function UserStats() {
       const response = await fetch('/api/admin/users')
       if (response.ok) {
         const data = await response.json()
-        setUsers(data)
+        setUsers(data.users)
       }
     } catch (error) {
       console.error('Error fetching users:', error)
