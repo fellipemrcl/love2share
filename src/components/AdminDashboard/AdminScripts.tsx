@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Loader2, Play, Database, Trash2, TestTube, Users, Shield, Download, UserPlus, UsersRound, UserCog, Zap, RefreshCw, CheckCircle } from 'lucide-react'
 import { RemoveUserForm } from './RemoveUserForm'
+import { CreateTestGroupForm } from './CreateTestGroupForm'
 
 interface ScriptResult {
   success: boolean
@@ -264,6 +265,12 @@ export function AdminScripts() {
           </div>
         </div>
       ))}
+
+      {/* Formulário de Criação de Grupos Personalizados */}
+      <div className="space-y-3">
+        <h3 className="text-lg font-semibold text-foreground">Criar Grupo Personalizado</h3>
+        <CreateTestGroupForm />
+      </div>
 
       {/* Formulário de Remoção de Usuário */}
       <div className="space-y-3">
