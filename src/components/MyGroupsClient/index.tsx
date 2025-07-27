@@ -68,6 +68,7 @@ export default function MyGroupsClient() {
   const [saving, setSaving] = useState(false);
   const [leavingGroup, setLeavingGroup] = useState<string | null>(null);
   const [removingMember, setRemovingMember] = useState<string | null>(null);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 
   const fetchGroups = useCallback(async () => {
     setLoading(true);
@@ -94,6 +95,7 @@ export default function MyGroupsClient() {
       description: group.description || "",
       maxMembers: group.maxMembers,
     });
+    setIsEditDialogOpen(true);
   };
 
   const closeEditDialog = () => {
@@ -103,6 +105,7 @@ export default function MyGroupsClient() {
       description: "",
       maxMembers: 2,
     });
+    setIsEditDialogOpen(false);
   };
 
   const saveGroup = async () => {
@@ -287,7 +290,12 @@ export default function MyGroupsClient() {
                   </div>
                   <div className="flex gap-2">
                     {group.canManage && (
-                      <Dialog>
+                      <Dialog open={isEditDialogOpen} onOpenChange={(open) => {
+                        if (!open) {
+                          closeEditDialog();
+                        }
+                        setIsEditDialogOpen(open);
+                      }}>
                         <DialogTrigger asChild>
                           <Button 
                             variant="ghost" 
@@ -304,16 +312,17 @@ export default function MyGroupsClient() {
                               Faça alterações no seu grupo
                             </DialogDescription>
                           </DialogHeader>
-                          <div className="space-y-4">
-                            <div>
+                          <div className="space-y-6">
+                            <div className="space-y-2">
                               <Label htmlFor="description">Descrição</Label>
                               <Textarea
                                 id="description"
                                 value={editForm.description}
                                 onChange={(e) => setEditForm(prev => ({ ...prev, description: e.target.value }))}
+                                placeholder="Descrição opcional do grupo"
                               />
                             </div>
-                            <div>
+                            <div className="space-y-2">
                               <Label htmlFor="maxMembers">Máximo de Membros</Label>
                               <Input
                                 id="maxMembers"
@@ -323,11 +332,11 @@ export default function MyGroupsClient() {
                                 value={editForm.maxMembers}
                                 onChange={(e) => setEditForm(prev => ({ ...prev, maxMembers: parseInt(e.target.value) || 2 }))}
                               />
-                              <p className="text-xs text-muted-foreground mt-1">
+                              <p className="text-xs text-muted-foreground">
                                 Limite baseado no streaming associado. Você pode escolher quantas vagas disponibilizar.
                               </p>
                             </div>
-                            <div className="flex justify-end gap-2">
+                            <div className="flex justify-end gap-2 pt-4">
                               <Button variant="outline" onClick={closeEditDialog}>
                                 Cancelar
                               </Button>
