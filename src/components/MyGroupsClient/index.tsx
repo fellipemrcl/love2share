@@ -8,7 +8,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Settings, Users, Crown, Shield, User, Plus } from "lucide-react";
+import { Settings, Users, Crown, Shield, User, Plus, LogOut } from "lucide-react";
 
 interface User {
   id: string;
@@ -46,6 +46,7 @@ interface ManagedGroup {
   userRole: string;
   isOwner: boolean;
   isAdmin: boolean;
+  canManage: boolean;
   availableSlots: number;
   _count: {
     streamingGroupUsers: number;
@@ -63,6 +64,7 @@ export default function MyGroupsClient() {
     maxMembers: 2,
   });
   const [saving, setSaving] = useState(false);
+  const [leavingGroup, setLeavingGroup] = useState<string | null>(null);
 
   const fetchGroups = useCallback(async () => {
     setLoading(true);
@@ -132,6 +134,32 @@ export default function MyGroupsClient() {
     }
   };
 
+  const leaveGroup = async (groupId: string) => {
+    setLeavingGroup(groupId);
+    try {
+      const response = await fetch('/api/groups/leave', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ groupId }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        console.log(data.message);
+        fetchGroups(); // Recarregar a lista
+      } else {
+        console.error(data.error || "Erro ao sair do grupo");
+      }
+    } catch (error) {
+      console.error("Erro ao sair do grupo:", error);
+    } finally {
+      setLeavingGroup(null);
+    }
+  };
+
   const getRoleIcon = (role: string) => {
     switch (role) {
       case 'OWNER':
@@ -163,7 +191,7 @@ export default function MyGroupsClient() {
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2">Meus Grupos</h1>
         <p className="text-muted-foreground">
-          Gerencie os grupos que você criou ou administra
+          Todos os grupos dos quais você faz parte
         </p>
       </div>
 
@@ -177,7 +205,7 @@ export default function MyGroupsClient() {
           <Users className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
           <h3 className="text-lg font-semibold mb-2">Nenhum grupo encontrado</h3>
           <p className="text-muted-foreground mb-4">
-            Você ainda não criou ou administra nenhum grupo
+            Você ainda não faz parte de nenhum grupo
           </p>
           <Button>
             <Plus className="h-4 w-4 mr-2" />
@@ -202,64 +230,75 @@ export default function MyGroupsClient() {
                       Criado por {group.createdBy.name || group.createdBy.email}
                     </CardDescription>
                   </div>
-                  {group.isOwner && (
-                    <Dialog>
-                      <DialogTrigger asChild>
-                        <Button 
-                          variant="ghost" 
-                          size="sm"
-                          onClick={() => openEditDialog(group)}
-                        >
-                          <Settings className="h-4 w-4" />
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent>
-                        <DialogHeader>
-                          <DialogTitle>Editar Grupo</DialogTitle>
-                          <DialogDescription>
-                            Faça alterações no seu grupo
-                          </DialogDescription>
-                        </DialogHeader>
-                        <div className="space-y-4">
-                          <div>
-                            <Label htmlFor="name">Nome do Grupo</Label>
-                            <Input
-                              id="name"
-                              value={editForm.name}
-                              onChange={(e) => setEditForm(prev => ({ ...prev, name: e.target.value }))}
-                            />
+                  <div className="flex gap-2">
+                    {group.canManage && (
+                      <Dialog>
+                        <DialogTrigger asChild>
+                          <Button 
+                            variant="ghost" 
+                            size="sm"
+                            onClick={() => openEditDialog(group)}
+                          >
+                            <Settings className="h-4 w-4" />
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent>
+                          <DialogHeader>
+                            <DialogTitle>Editar Grupo</DialogTitle>
+                            <DialogDescription>
+                              Faça alterações no seu grupo
+                            </DialogDescription>
+                          </DialogHeader>
+                          <div className="space-y-4">
+                            <div>
+                              <Label htmlFor="name">Nome do Grupo</Label>
+                              <Input
+                                id="name"
+                                value={editForm.name}
+                                onChange={(e) => setEditForm(prev => ({ ...prev, name: e.target.value }))}
+                              />
+                            </div>
+                            <div>
+                              <Label htmlFor="description">Descrição</Label>
+                              <Textarea
+                                id="description"
+                                value={editForm.description}
+                                onChange={(e) => setEditForm(prev => ({ ...prev, description: e.target.value }))}
+                              />
+                            </div>
+                            <div>
+                              <Label htmlFor="maxMembers">Máximo de Membros</Label>
+                              <Input
+                                id="maxMembers"
+                                type="number"
+                                min="2"
+                                max="10"
+                                value={editForm.maxMembers}
+                                onChange={(e) => setEditForm(prev => ({ ...prev, maxMembers: parseInt(e.target.value) || 2 }))}
+                              />
+                            </div>
+                            <div className="flex justify-end gap-2">
+                              <Button variant="outline" onClick={closeEditDialog}>
+                                Cancelar
+                              </Button>
+                              <Button onClick={saveGroup} disabled={saving}>
+                                {saving ? "Salvando..." : "Salvar"}
+                              </Button>
+                            </div>
                           </div>
-                          <div>
-                            <Label htmlFor="description">Descrição</Label>
-                            <Textarea
-                              id="description"
-                              value={editForm.description}
-                              onChange={(e) => setEditForm(prev => ({ ...prev, description: e.target.value }))}
-                            />
-                          </div>
-                          <div>
-                            <Label htmlFor="maxMembers">Máximo de Membros</Label>
-                            <Input
-                              id="maxMembers"
-                              type="number"
-                              min="2"
-                              max="10"
-                              value={editForm.maxMembers}
-                              onChange={(e) => setEditForm(prev => ({ ...prev, maxMembers: parseInt(e.target.value) || 2 }))}
-                            />
-                          </div>
-                          <div className="flex justify-end gap-2">
-                            <Button variant="outline" onClick={closeEditDialog}>
-                              Cancelar
-                            </Button>
-                            <Button onClick={saveGroup} disabled={saving}>
-                              {saving ? "Salvando..." : "Salvar"}
-                            </Button>
-                          </div>
-                        </div>
-                      </DialogContent>
-                    </Dialog>
-                  )}
+                        </DialogContent>
+                      </Dialog>
+                    )}
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => leaveGroup(group.id)}
+                      disabled={leavingGroup === group.id}
+                      className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                    >
+                      {leavingGroup === group.id ? "Saindo..." : "Sair"}
+                    </Button>
+                  </div>
                 </div>
               </CardHeader>
               <CardContent>

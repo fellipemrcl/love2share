@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { currentUser } from "@clerk/nextjs/server";
 import prisma from "@/lib/prisma";
 
-// GET /api/groups/my - Listar grupos do usuário (onde ele é OWNER ou ADMIN)
+// GET /api/groups/my - Listar todos os grupos do usuário
 export async function GET() {
   try {
     const user = await currentUser();
@@ -20,13 +20,10 @@ export async function GET() {
       return NextResponse.json({ groups: [] });
     }
 
-    // Buscar grupos onde o usuário é OWNER ou ADMIN
+    // Buscar TODOS os grupos onde o usuário é membro (qualquer role)
     const userGroups = await prisma.streamingGroupUser.findMany({
       where: {
         userId: dbUser.id,
-        role: {
-          in: ['OWNER', 'ADMIN'],
-        },
       },
       include: {
         streamingGroup: {
@@ -85,12 +82,13 @@ export async function GET() {
       userRole: ug.role,
       isOwner: ug.role === 'OWNER',
       isAdmin: ug.role === 'ADMIN' || ug.role === 'OWNER',
+      canManage: ug.role === 'OWNER' || ug.role === 'ADMIN',
       availableSlots: ug.streamingGroup.maxMembers - ug.streamingGroup._count.streamingGroupUsers,
     }));
 
     return NextResponse.json({ groups });
   } catch (error) {
-    console.error("Erro ao buscar grupos gerenciáveis:", error);
+    console.error("Erro ao buscar grupos do usuário:", error);
     return NextResponse.json(
       { error: "Erro interno do servidor" },
       { status: 500 }
