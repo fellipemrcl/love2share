@@ -1,12 +1,5 @@
 "use client"
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-import { useEffect, useState } from "react"
-import { useUser } from "@clerk/nextjs"
-
-import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
@@ -15,7 +8,14 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
+} from "@/components/ui/form";
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
+import { useEffect, useState } from "react"
+import { useUser } from "@clerk/nextjs"
+
+import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
   Select,
@@ -95,9 +95,9 @@ export function CreateGroupForm({ onSubmit, isSubmitting = false }: CreateGroupF
       const groupName = `Grupo de ${streaming.name} de ${userName}`;
       setGeneratedGroupName(groupName);
       
-      // Resetar o número de membros para o mínimo quando trocar de streaming
-      if (form.getValues('maxMembers') > streaming.maxUsers) {
-        form.setValue('maxMembers', Math.min(streaming.maxUsers, 2));
+      // Ajustar o número de membros se exceder o limite do streaming
+      if (form.getValues('maxMembers') > streaming.maxSimultaneousScreens) {
+        form.setValue('maxMembers', streaming.maxSimultaneousScreens);
       }
     }
   };
@@ -183,7 +183,7 @@ export function CreateGroupForm({ onSubmit, isSubmitting = false }: CreateGroupF
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {Array.from({ length: selectedStreaming.maxUsers - 1 }, (_, i) => {
+                      {Array.from({ length: selectedStreaming.maxSimultaneousScreens - 1 }, (_, i) => {
                         const memberCount = i + 2; // Começa em 2 (você + 1 pessoa)
                         const availableSlots = memberCount - 1; // Vagas disponíveis (excluindo você)
                         return (
@@ -196,6 +196,10 @@ export function CreateGroupForm({ onSubmit, isSubmitting = false }: CreateGroupF
                   </Select>
                   <FormDescription>
                     Você já conta como 1 membro. Selecione quantas vagas adicionais deseja disponibilizar.
+                    <br />
+                    <span className="text-xs text-muted-foreground">
+                      Máximo: {selectedStreaming.maxSimultaneousScreens} membros ({selectedStreaming.maxSimultaneousScreens} telas)
+                    </span>
                   </FormDescription>
                   <FormMessage />
                 </FormItem>

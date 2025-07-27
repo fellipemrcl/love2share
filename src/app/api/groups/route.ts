@@ -58,9 +58,9 @@ export async function POST(request: NextRequest) {
     }
 
     // Validar se o maxMembers não excede o limite do streaming
-    if (maxMembers > streaming.maxUsers) {
+    if (maxMembers > streaming.maxSimultaneousScreens) {
       return NextResponse.json(
-        { error: `Número de membros não pode exceder ${streaming.maxUsers} para este streaming` },
+        { error: `Número de membros não pode exceder ${streaming.maxSimultaneousScreens} para este streaming (${streaming.maxSimultaneousScreens} telas)` },
         { status: 400 }
       );
     }
@@ -74,7 +74,7 @@ export async function POST(request: NextRequest) {
       data: {
         name: groupName,
         description: groupDescription,
-        maxMembers: maxMembers,
+        maxMembers: maxMembers, // Usar o valor escolhido pelo usuário
         createdById: dbUser.id,
       },
     });
@@ -85,6 +85,18 @@ export async function POST(request: NextRequest) {
         streamingGroupId: group.id,
         userId: dbUser.id,
         role: 'OWNER',
+      },
+    });
+
+    // Criar relacionamento com o streaming selecionado
+    await prisma.streamingGroupStreaming.create({
+      data: {
+        streamingGroupId: group.id,
+        streamingId: streamingId,
+        accountEmail: '', // Será preenchido posteriormente pelo usuário
+        accountPassword: '', // Será preenchido posteriormente pelo usuário
+        isAccountOwner: true,
+        accountOwnerId: dbUser.id,
       },
     });
 

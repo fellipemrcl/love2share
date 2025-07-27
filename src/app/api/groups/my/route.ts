@@ -152,6 +152,35 @@ export async function PUT(request: NextRequest) {
           { status: 400 }
         );
       }
+
+      // Verificar se não excede o limite do streaming associado
+      const groupWithStreaming = await prisma.streamingGroup.findUnique({
+        where: { id: groupId },
+        include: {
+          streamingGroupStreamings: {
+            include: {
+              streaming: {
+                select: {
+                  maxSimultaneousScreens: true,
+                },
+              },
+            },
+          },
+        },
+      });
+
+      if (groupWithStreaming?.streamingGroupStreamings.length) {
+        const maxAllowed = Math.max(
+          ...groupWithStreaming.streamingGroupStreamings.map(s => s.streaming.maxSimultaneousScreens)
+        );
+        
+        if (maxMembers > maxAllowed) {
+          return NextResponse.json(
+            { error: `Número máximo de membros não pode exceder ${maxAllowed} (limite do streaming)` },
+            { status: 400 }
+          );
+        }
+      }
     }
 
     // Atualizar o grupo

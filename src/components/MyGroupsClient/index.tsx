@@ -292,6 +292,9 @@ export default function MyGroupsClient() {
                                 value={editForm.maxMembers}
                                 onChange={(e) => setEditForm(prev => ({ ...prev, maxMembers: parseInt(e.target.value) || 2 }))}
                               />
+                              <p className="text-xs text-muted-foreground mt-1">
+                                Limite baseado no streaming associado. Você pode escolher quantas vagas disponibilizar.
+                              </p>
                             </div>
                             <div className="flex justify-end gap-2">
                               <Button variant="outline" onClick={closeEditDialog}>
