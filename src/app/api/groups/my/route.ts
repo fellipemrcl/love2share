@@ -84,6 +84,7 @@ export async function GET() {
       isAdmin: ug.role === 'ADMIN' || ug.role === 'OWNER',
       canManage: ug.role === 'OWNER' || ug.role === 'ADMIN',
       availableSlots: ug.streamingGroup.maxMembers - ug.streamingGroup._count.streamingGroupUsers,
+      currentUserId: dbUser.id, // Adicionar ID do usuário atual
     }));
 
     return NextResponse.json({ groups });

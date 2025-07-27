@@ -9,7 +9,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Settings, Users, Crown, Shield, User, Plus } from "lucide-react";
+import { Settings, Users, Crown, Shield, User, Plus, UserMinus, Loader2 } from "lucide-react";
 
 interface User {
   id: string;
@@ -49,6 +49,7 @@ interface ManagedGroup {
   isAdmin: boolean;
   canManage: boolean;
   availableSlots: number;
+  currentUserId: string; // ID do usuário atual
   _count: {
     streamingGroupUsers: number;
     streamingGroupStreamings: number;
@@ -66,6 +67,7 @@ export default function MyGroupsClient() {
   });
   const [saving, setSaving] = useState(false);
   const [leavingGroup, setLeavingGroup] = useState<string | null>(null);
+  const [removingMember, setRemovingMember] = useState<string | null>(null);
 
   const fetchGroups = useCallback(async () => {
     setLoading(true);
@@ -174,6 +176,40 @@ export default function MyGroupsClient() {
       });
     } finally {
       setLeavingGroup(null);
+    }
+  };
+
+  const removeMember = async (groupId: string, userId: string, memberName: string) => {
+    if (!confirm(`Tem certeza que deseja remover ${memberName} do grupo?`)) {
+      return;
+    }
+
+    setRemovingMember(userId);
+    try {
+      const response = await fetch(`/api/groups/${groupId}/members/${userId}`, {
+        method: 'DELETE',
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        toast("Membro removido", {
+          description: `${memberName} foi removido do grupo com sucesso.`,
+        });
+        fetchGroups(); // Recarregar a lista
+      } else {
+        console.error(data.error || "Erro ao remover membro");
+        toast.error("Erro ao remover membro", {
+          description: data.error || "Ocorreu um erro inesperado. Tente novamente.",
+        });
+      }
+    } catch (error) {
+      console.error("Erro ao remover membro:", error);
+      toast.error("Erro ao remover membro", {
+        description: "Ocorreu um erro inesperado. Verifique sua conexão e tente novamente.",
+      });
+    } finally {
+      setRemovingMember(null);
     }
   };
 
@@ -342,21 +378,57 @@ export default function MyGroupsClient() {
                 <div className="mb-4">
                   <h4 className="text-sm font-medium mb-2">Membros ({group._count.streamingGroupUsers}/{group.maxMembers}):</h4>
                   <div className="space-y-2">
-                    {group.streamingGroupUsers.slice(0, 3).map((member) => (
-                      <div key={member.id} className="flex items-center justify-between text-sm">
-                        <span className="text-muted-foreground">
-                          {member.user.name || member.user.email}
-                        </span>
-                        <Badge variant={getRoleBadgeVariant(member.role)} className="flex items-center gap-1 text-xs">
-                          {getRoleIcon(member.role)}
-                          {member.role}
-                        </Badge>
-                      </div>
-                    ))}
-                    {group.streamingGroupUsers.length > 3 && (
-                      <p className="text-xs text-muted-foreground">
-                        +{group.streamingGroupUsers.length - 3} mais
-                      </p>
+                    {/* Se for owner ou admin, mostrar todos os membros com opção de remoção */}
+                    {group.canManage ? (
+                      group.streamingGroupUsers.map((member) => (
+                        <div key={member.id} className="flex items-center justify-between text-sm">
+                          <div className="flex items-center gap-2">
+                            <span className="text-muted-foreground">
+                              {member.user.name || member.user.email}
+                            </span>
+                            <Badge variant={getRoleBadgeVariant(member.role)} className="flex items-center gap-1 text-xs">
+                              {getRoleIcon(member.role)}
+                              {member.role}
+                            </Badge>
+                          </div>
+                          {/* Mostrar botão de remoção apenas se não for o próprio usuário e não for OWNER */}
+                          {member.role !== 'OWNER' && member.userId !== group.currentUserId && (
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => removeMember(group.id, member.userId, member.user.name || member.user.email)}
+                              disabled={removingMember === member.userId}
+                              className="h-6 w-6 p-0 text-red-600 hover:text-red-800 hover:bg-red-50"
+                            >
+                              {removingMember === member.userId ? (
+                                <Loader2 className="h-3 w-3 animate-spin" />
+                              ) : (
+                                <UserMinus className="h-3 w-3" />
+                              )}
+                            </Button>
+                          )}
+                        </div>
+                      ))
+                    ) : (
+                      /* Se não for owner ou admin, mostrar apenas os primeiros 3 membros */
+                      <>
+                        {group.streamingGroupUsers.slice(0, 3).map((member) => (
+                          <div key={member.id} className="flex items-center justify-between text-sm">
+                            <span className="text-muted-foreground">
+                              {member.user.name || member.user.email}
+                            </span>
+                            <Badge variant={getRoleBadgeVariant(member.role)} className="flex items-center gap-1 text-xs">
+                              {getRoleIcon(member.role)}
+                              {member.role}
+                            </Badge>
+                          </div>
+                        ))}
+                        {group.streamingGroupUsers.length > 3 && (
+                          <p className="text-xs text-muted-foreground">
+                            +{group.streamingGroupUsers.length - 3} mais
+                          </p>
+                        )}
+                      </>
                     )}
                   </div>
                 </div>
