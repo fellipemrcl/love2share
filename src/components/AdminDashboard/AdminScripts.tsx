@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Loader2, Play, Database, Trash2, TestTube, Users, Shield, Download, UserPlus } from 'lucide-react'
+import { Loader2, Play, Database, Trash2, TestTube, Users, Shield, Download, UserPlus, UsersRound, UserCog, Zap } from 'lucide-react'
 import { RemoveUserForm } from './RemoveUserForm'
 
 interface ScriptResult {
@@ -67,6 +67,42 @@ export function AdminScripts() {
       category: 'Dados'
     },
     {
+      id: 'create-test-group',
+      name: 'Criar Grupo de Teste',
+      description: 'Cria um grupo aleatório em nome de um usuário existente',
+      icon: UsersRound,
+      endpoint: 'create-test-group',
+      variant: 'default' as const,
+      category: 'Dados'
+    },
+    {
+      id: 'add-user-to-group',
+      name: 'Adicionar Usuário a Grupo',
+      description: 'Adiciona um usuário aleatório como membro de um grupo existente',
+      icon: UserCog,
+      endpoint: 'add-user-to-group',
+      variant: 'default' as const,
+      category: 'Dados'
+    },
+    {
+      id: 'manage-test-users',
+      name: 'Gerenciar Usuários de Teste',
+      description: 'Lista todos os usuários de teste e suas informações detalhadas',
+      icon: Users,
+      endpoint: 'manage-test-users',
+      variant: 'outline' as const,
+      category: 'Gerenciamento'
+    },
+    {
+      id: 'populate-test-data',
+      name: 'Popular Dados de Teste',
+      description: 'Cria automaticamente usuários, grupos e memberships para teste',
+      icon: Zap,
+      endpoint: 'populate-test-data',
+      variant: 'default' as const,
+      category: 'Dados'
+    },
+    {
       id: 'seed-streamings',
       name: 'Criar Streamings de Exemplo',
       description: 'Adiciona streamings populares (Netflix, Prime Video, Disney+, HBO Max, Spotify)',
@@ -103,6 +139,15 @@ export function AdminScripts() {
       category: 'Limpeza'
     },
     {
+      id: 'clean-test-users',
+      name: 'Limpar Usuários de Teste',
+      description: 'Remove TODOS os usuários de teste e suas associações (cuidado!)',
+      icon: Trash2,
+      endpoint: 'clean-test-users',
+      variant: 'destructive' as const,
+      category: 'Limpeza'
+    },
+    {
       id: 'reset-streaming-status',
       name: 'Ativar Todos os Streamings',
       description: 'Define todos os streamings como ativos',
@@ -115,7 +160,7 @@ export function AdminScripts() {
       id: 'count-users',
       name: 'Contar Usuários',
       description: 'Mostra estatísticas detalhadas de usuários, grupos e streamings',
-      icon: Users,
+      icon: TestTube,
       endpoint: 'count-users',
       variant: 'outline' as const,
       category: 'Estatísticas'
