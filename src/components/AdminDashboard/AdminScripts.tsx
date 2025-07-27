@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Loader2, Play, Database, Trash2, TestTube, Users, Shield, Download } from 'lucide-react'
+import { Loader2, Play, Database, Trash2, TestTube, Users, Shield, Download, UserPlus } from 'lucide-react'
 import { RemoveUserForm } from './RemoveUserForm'
 
 interface ScriptResult {
@@ -57,6 +57,15 @@ export function AdminScripts() {
   }
 
   const scripts = [
+    {
+      id: 'create-test-user',
+      name: 'Criar Usuário de Teste',
+      description: 'Gera um usuário de teste com dados aleatórios usando Faker',
+      icon: UserPlus,
+      endpoint: 'create-test-user',
+      variant: 'default' as const,
+      category: 'Dados'
+    },
     {
       id: 'seed-streamings',
       name: 'Criar Streamings de Exemplo',
