@@ -59,6 +59,14 @@ const MainNavigationMenu = () => {
             asChild
             className={navigationMenuTriggerStyle()}
           >
+            <Link href="/savings">Minhas economias</Link>
+          </NavigationMenuLink>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
+          <NavigationMenuLink
+            asChild
+            className={navigationMenuTriggerStyle()}
+          >
             <Link href="/help">Ajuda</Link>
           </NavigationMenuLink>
         </NavigationMenuItem>
