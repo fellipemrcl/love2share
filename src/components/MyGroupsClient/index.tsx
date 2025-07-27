@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import { toast } from "sonner";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -8,7 +9,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Settings, Users, Crown, Shield, User, Plus, LogOut } from "lucide-react";
+import { Settings, Users, Crown, Shield, User, Plus } from "lucide-react";
 
 interface User {
   id: string;
@@ -122,10 +123,16 @@ export default function MyGroupsClient() {
 
       if (response.ok) {
         console.log(data.message);
+        toast("Configurações atualizadas!", {
+          description: "As alterações do grupo foram salvas com sucesso.",
+        });
         fetchGroups(); // Recarregar a lista
         closeEditDialog();
       } else {
         console.error(data.error || "Erro ao atualizar grupo");
+        toast.error("Erro ao atualizar grupo", {
+          description: data.error || "Ocorreu um erro inesperado. Tente novamente.",
+        });
       }
     } catch (error) {
       console.error("Erro ao atualizar grupo:", error);
@@ -149,12 +156,21 @@ export default function MyGroupsClient() {
 
       if (response.ok) {
         console.log(data.message);
+        toast("Você saiu do grupo", {
+          description: "Você foi removido do grupo com sucesso.",
+        });
         fetchGroups(); // Recarregar a lista
       } else {
         console.error(data.error || "Erro ao sair do grupo");
+        toast.error("Erro ao sair do grupo", {
+          description: data.error || "Ocorreu um erro inesperado. Tente novamente.",
+        });
       }
     } catch (error) {
       console.error("Erro ao sair do grupo:", error);
+      toast.error("Erro ao sair do grupo", {
+        description: "Ocorreu um erro inesperado. Verifique sua conexão e tente novamente.",
+      });
     } finally {
       setLeavingGroup(null);
     }

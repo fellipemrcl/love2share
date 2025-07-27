@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { toast } from 'sonner'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -78,12 +79,17 @@ export function StreamingManagement() {
             ? { ...streaming, isActive: newStatus }
             : streaming
         ))
+        toast(`Streaming ${newStatus ? 'ativado' : 'desativado'}`, {
+          description: `O status foi atualizado com sucesso.`,
+        })
         // Também recarregar os dados para garantir sincronização
         await fetchStreamings()
       } else {
         const errorData = await response.json()
         console.error('Failed to update streaming status:', errorData)
-        alert('Erro ao atualizar status do streaming')
+        toast.error('Erro ao atualizar status', {
+          description: errorData.error || 'Ocorreu um erro inesperado.',
+        })
         // Reverter mudança local se a API falhar
         await fetchStreamings()
       }
@@ -144,11 +150,15 @@ export function StreamingManagement() {
           await fetchStreamings()
           setIsEditDialogOpen(false)
           resetForm()
-          alert('Streaming atualizado com sucesso!')
+          toast('Streaming atualizado!', {
+            description: 'As alterações foram salvas com sucesso.',
+          })
         } else {
           const errorData = await response.json()
           console.error('Failed to update streaming:', errorData)
-          alert('Erro ao atualizar streaming: ' + (errorData.error || 'Erro desconhecido'))
+          toast.error('Erro ao atualizar streaming', {
+            description: errorData.error || 'Erro desconhecido',
+          })
         }
       } else {
         // Criar novo streaming
@@ -165,11 +175,15 @@ export function StreamingManagement() {
           await fetchStreamings()
           setIsAddDialogOpen(false)
           resetForm()
-          alert('Streaming criado com sucesso!')
+          toast('Streaming criado!', {
+            description: 'O novo serviço de streaming foi adicionado com sucesso.',
+          })
         } else {
           const errorData = await response.json()
           console.error('Failed to create streaming:', errorData)
-          alert('Erro ao criar streaming: ' + (errorData.error || 'Erro desconhecido'))
+          toast.error('Erro ao criar streaming', {
+            description: errorData.error || 'Erro desconhecido',
+          })
         }
       }
     } catch (error) {

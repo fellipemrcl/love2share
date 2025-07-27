@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import { toast } from "sonner";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -91,13 +92,26 @@ export default function FindGroupsClient({ initialStreamings }: FindGroupsClient
 
       if (response.ok) {
         console.log(data.message);
+        toast("Você entrou no grupo!", {
+          description: "Parabéns! Agora você faz parte do grupo.",
+          action: {
+            label: "Ver meus grupos",
+            onClick: () => window.location.href = '/groups/my',
+          },
+        });
         // Remover o grupo da lista após entrar
         setGroups(groups.filter(g => g.id !== groupId));
       } else {
         console.error(data.error || "Erro ao entrar no grupo");
+        toast.error("Erro ao entrar no grupo", {
+          description: data.error || "Ocorreu um erro inesperado. Tente novamente.",
+        });
       }
     } catch (error) {
       console.error("Erro ao entrar no grupo:", error);
+      toast.error("Erro ao entrar no grupo", {
+        description: "Ocorreu um erro inesperado. Verifique sua conexão e tente novamente.",
+      });
     } finally {
       setJoining(null);
     }
