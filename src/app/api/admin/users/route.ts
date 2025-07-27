@@ -29,7 +29,7 @@ export async function GET() {
       createdAt: new Date().toISOString() // Fallback since User model doesn't have createdAt
     }))
 
-    return NextResponse.json(usersWithCreatedAt)
+    return NextResponse.json({ users: usersWithCreatedAt })
   } catch (error) {
     console.error('Error fetching users:', error)
     return NextResponse.json(
