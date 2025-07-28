@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Loader2, Play, Database, Trash2, TestTube, Users, Shield, Download, UserPlus, UsersRound, UserCog, Zap, RefreshCw, CheckCircle, Crown } from 'lucide-react'
+import { Loader2, Play, Database, Trash2, TestTube, Users, Shield, Download, UserPlus, UsersRound, UserCog, Zap, RefreshCw, CheckCircle } from 'lucide-react'
 import { RemoveUserForm } from './RemoveUserForm'
 import { CreateTestGroupForm } from './CreateTestGroupForm'
 
@@ -84,15 +84,6 @@ export function AdminScripts() {
       endpoint: 'add-user-to-group',
       variant: 'default' as const,
       category: 'Dados'
-    },
-    {
-      id: 'manage-admin-access',
-      name: 'Conceder Acesso de Admin',
-      description: 'Permite dar permissões de administrador para um usuário existente',
-      icon: Crown,
-      endpoint: 'manage-admin-access',
-      variant: 'default' as const,
-      category: 'Gerenciamento'
     },
     {
       id: 'manage-test-users',
