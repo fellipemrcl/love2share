@@ -9,6 +9,7 @@ import { StreamingManagement } from '../AdminDashboard/StreamingManagement'
 import GroupManagement from '../AdminDashboard/GroupManagement'
 import { SystemHealth } from '../AdminDashboard/SystemHealth'
 import { AdminScripts } from '../AdminDashboard/AdminScripts'
+import { AdminManagement } from '../AdminDashboard/AdminManagement'
 
 interface DashboardStats {
   totalUsers: number
@@ -110,6 +111,7 @@ export default function AdminDashboard() {
           <TabsTrigger value="streamings">Streamings</TabsTrigger>
           <TabsTrigger value="groups">Grupos</TabsTrigger>
           <TabsTrigger value="scripts">Scripts</TabsTrigger>
+          <TabsTrigger value="admins">Administradores</TabsTrigger>
           <TabsTrigger value="system">Sistema</TabsTrigger>
         </TabsList>
 
@@ -160,6 +162,10 @@ export default function AdminDashboard() {
 
         <TabsContent value="scripts">
           <AdminScripts />
+        </TabsContent>
+
+        <TabsContent value="admins">
+          <AdminManagement />
         </TabsContent>
 
         <TabsContent value="system">
