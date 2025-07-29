@@ -1,8 +1,7 @@
 import { currentUser } from '@clerk/nextjs/server'
 
 const ADMIN_EMAILS = [
-  'fellipemarcelmaiasilva@gmail.com',
-  'test@admin.com'
+  'fellipemarcelmaiasilva@gmail.com'
 ]
 
 export async function isAdmin(): Promise<boolean> {
