@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import PendingInvitesBadge from "@/components/PendingInvitesBadge";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -47,6 +48,19 @@ const MainNavigationMenu = () => {
                     </div>
                     <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
                       Gerencie suas assinaturas e compartilhamentos
+                    </p>
+                  </Link>
+                </NavigationMenuLink>
+              </li>
+              <li>
+                <NavigationMenuLink asChild>
+                  <Link href="/invites">
+                    <div className="text-sm font-medium leading-none flex items-center">
+                      Convites
+                      <PendingInvitesBadge />
+                    </div>
+                    <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                      Gerencie suas solicitações e convites de grupos
                     </p>
                   </Link>
                 </NavigationMenuLink>

@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { groupId } = body;
+    const { groupId, message } = body;
 
     if (!groupId) {
       return NextResponse.json(
@@ -42,6 +42,12 @@ export async function POST(request: NextRequest) {
       where: { id: groupId },
       include: {
         streamingGroupUsers: true,
+        joinRequests: {
+          where: {
+            userId: dbUser.id,
+            status: 'PENDING'
+          }
+        },
         _count: {
           select: {
             streamingGroupUsers: true,
@@ -69,6 +75,14 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Verificar se já existe uma solicitação pendente
+    if (group.joinRequests.length > 0) {
+      return NextResponse.json(
+        { error: "Você já possui uma solicitação pendente para este grupo" },
+        { status: 400 }
+      );
+    }
+
     // Verificar se o grupo ainda tem vagas
     if (group._count.streamingGroupUsers >= group.maxMembers) {
       return NextResponse.json(
@@ -77,12 +91,12 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Adicionar o usuário ao grupo como membro
-    const membership = await prisma.streamingGroupUser.create({
+    // Criar a solicitação de participação
+    const joinRequest = await prisma.groupJoinRequest.create({
       data: {
         streamingGroupId: groupId,
         userId: dbUser.id,
-        role: 'MEMBER',
+        requestMessage: message || null,
       },
       include: {
         user: {
@@ -93,30 +107,21 @@ export async function POST(request: NextRequest) {
           },
         },
         streamingGroup: {
-          include: {
-            createdBy: {
-              select: {
-                id: true,
-                name: true,
-                email: true,
-              },
-            },
-            streamingGroupStreamings: {
-              include: {
-                streaming: true,
-              },
-            },
+          select: {
+            id: true,
+            name: true,
+            description: true,
           },
         },
       },
     });
 
     return NextResponse.json({ 
-      message: "Você se juntou ao grupo com sucesso!",
-      membership 
+      message: "Solicitação enviada com sucesso! Aguarde a aprovação do administrador.",
+      joinRequest 
     }, { status: 201 });
   } catch (error) {
-    console.error("Erro ao entrar no grupo:", error);
+    console.error("Erro ao solicitar entrada no grupo:", error);
     return NextResponse.json(
       { error: "Erro interno do servidor" },
       { status: 500 }

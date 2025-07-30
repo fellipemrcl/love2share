@@ -92,24 +92,24 @@ export default function FindGroupsClient({ initialStreamings }: FindGroupsClient
 
       if (response.ok) {
         console.log(data.message);
-        toast("Você entrou no grupo!", {
-          description: "Parabéns! Agora você faz parte do grupo.",
+        toast("Solicitação enviada!", {
+          description: "Sua solicitação foi enviada ao administrador do grupo. Aguarde a aprovação.",
           action: {
-            label: "Ver meus grupos",
-            onClick: () => window.location.href = '/groups/my',
+            label: "Ver minhas solicitações",
+            onClick: () => window.location.href = '/invites',
           },
         });
-        // Remover o grupo da lista após entrar
-        setGroups(groups.filter(g => g.id !== groupId));
+        // Não remove o grupo da lista, apenas atualiza o estado
+        fetchGroups();
       } else {
-        console.error(data.error || "Erro ao entrar no grupo");
-        toast.error("Erro ao entrar no grupo", {
+        console.error(data.error || "Erro ao solicitar entrada no grupo");
+        toast.error("Erro ao solicitar entrada no grupo", {
           description: data.error || "Ocorreu um erro inesperado. Tente novamente.",
         });
       }
     } catch (error) {
-      console.error("Erro ao entrar no grupo:", error);
-      toast.error("Erro ao entrar no grupo", {
+      console.error("Erro ao solicitar entrada no grupo:", error);
+      toast.error("Erro ao solicitar entrada no grupo", {
         description: "Ocorreu um erro inesperado. Verifique sua conexão e tente novamente.",
       });
     } finally {
@@ -248,7 +248,7 @@ export default function FindGroupsClient({ initialStreamings }: FindGroupsClient
                   disabled={joining === group.id}
                   className="w-full"
                 >
-                  {joining === group.id ? "Entrando..." : "Participar do Grupo"}
+                  {joining === group.id ? "Enviando..." : "Solicitar Participação"}
                 </Button>
               </CardContent>
             </Card>

@@ -16,6 +16,8 @@ model User {
   streamingGroupUsers   StreamingGroupUser[]
   ownedStreamingAccounts StreamingGroupStreaming[]
   createdGroups         StreamingGroup[]      @relation("GroupCreator")
+  joinRequests          GroupJoinRequest[]
+  respondedJoinRequests GroupJoinRequest[]    @relation("GroupJoinRequestResponder")
 }
 
 model StreamingGroup {
@@ -29,6 +31,7 @@ model StreamingGroup {
   updatedAt             DateTime              @updatedAt
   streamingGroupUsers   StreamingGroupUser[]
   streamingGroupStreamings StreamingGroupStreaming[]
+  joinRequests          GroupJoinRequest[]
 }
 
 model StreamingGroupUser {
@@ -44,10 +47,33 @@ model StreamingGroupUser {
   @@unique([streamingGroupId, userId])
 }
 
+model GroupJoinRequest {
+  id                    String         @id @default(uuid())
+  streamingGroup        StreamingGroup @relation(fields: [streamingGroupId], references: [id])
+  streamingGroupId      String
+  user                  User           @relation(fields: [userId], references: [id])
+  userId                String
+  status                JoinRequestStatus @default(PENDING)
+  requestMessage        String?
+  responseMessage       String?
+  requestedAt           DateTime       @default(now())
+  respondedAt           DateTime?
+  respondedById         String?
+  respondedBy           User?          @relation("GroupJoinRequestResponder", fields: [respondedById], references: [id])
+
+  @@unique([streamingGroupId, userId])
+}
+
 enum StreamingGroupRole {
   OWNER
   ADMIN
   MEMBER
+}
+
+enum JoinRequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
 }
 
 model Streaming {
