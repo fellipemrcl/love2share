@@ -45,7 +45,6 @@ export async function POST(request: NextRequest) {
         joinRequests: {
           where: {
             userId: dbUser.id,
-            status: 'PENDING'
           }
         },
         _count: {
@@ -76,11 +75,26 @@ export async function POST(request: NextRequest) {
     }
 
     // Verificar se já existe uma solicitação pendente
-    if (group.joinRequests.length > 0) {
+    const pendingRequest = group.joinRequests.find(req => req.status === 'PENDING');
+    if (pendingRequest) {
       return NextResponse.json(
         { error: "Você já possui uma solicitação pendente para este grupo" },
         { status: 400 }
       );
+    }
+
+    // Limpar qualquer solicitação rejeitada ou aprovada antiga
+    const oldRequests = group.joinRequests.filter(req => req.status !== 'PENDING');
+    if (oldRequests.length > 0) {
+      await prisma.groupJoinRequest.deleteMany({
+        where: {
+          streamingGroupId: groupId,
+          userId: dbUser.id,
+          status: {
+            in: ['APPROVED', 'REJECTED']
+          }
+        },
+      });
     }
 
     // Verificar se o grupo ainda tem vagas

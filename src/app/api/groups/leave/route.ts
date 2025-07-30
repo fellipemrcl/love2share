@@ -66,6 +66,10 @@ export async function DELETE(request: NextRequest) {
     // Verificar se é o único membro ou se é OWNER
     if (membership.streamingGroup._count.streamingGroupUsers === 1) {
       // Se é o único membro, deletar o grupo inteiro
+      await prisma.groupJoinRequest.deleteMany({
+        where: { streamingGroupId: groupId },
+      });
+      
       await prisma.streamingGroupStreaming.deleteMany({
         where: { streamingGroupId: groupId },
       });
@@ -109,6 +113,14 @@ export async function DELETE(request: NextRequest) {
           where: { id: membership.id },
         });
 
+        // Limpar qualquer solicitação de entrada pendente do usuário para este grupo
+        await prisma.groupJoinRequest.deleteMany({
+          where: {
+            streamingGroupId: groupId,
+            userId: dbUser.id,
+          },
+        });
+
         return NextResponse.json({ 
           message: "Você saiu do grupo e a propriedade foi transferida para outro administrador",
           ownershipTransferred: true 
@@ -139,6 +151,14 @@ export async function DELETE(request: NextRequest) {
             where: { id: membership.id },
           });
 
+          // Limpar qualquer solicitação de entrada pendente do usuário para este grupo
+          await prisma.groupJoinRequest.deleteMany({
+            where: {
+              streamingGroupId: groupId,
+              userId: dbUser.id,
+            },
+          });
+
           return NextResponse.json({ 
             message: "Você saiu do grupo e a propriedade foi transferida para o membro mais antigo",
             ownershipTransferred: true 
@@ -150,6 +170,14 @@ export async function DELETE(request: NextRequest) {
     // Para membros regulares ou ADMINs, simplesmente remover
     await prisma.streamingGroupUser.delete({
       where: { id: membership.id },
+    });
+
+    // Limpar qualquer solicitação de entrada pendente do usuário para este grupo
+    await prisma.groupJoinRequest.deleteMany({
+      where: {
+        streamingGroupId: groupId,
+        userId: dbUser.id,
+      },
     });
 
     return NextResponse.json({ 

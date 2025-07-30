@@ -110,6 +110,14 @@ export async function DELETE(
       },
     });
 
+    // Limpar qualquer solicitação de entrada pendente do usuário para este grupo
+    await prisma.groupJoinRequest.deleteMany({
+      where: {
+        streamingGroupId: groupId,
+        userId: targetUserId,
+      },
+    });
+
     return NextResponse.json({ 
       message: "Membro removido com sucesso",
       removedMember: {
