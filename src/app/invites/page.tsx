@@ -1,12 +1,22 @@
 import InvitesManagement from "@/components/InvitesManagement";
+import PageLayout from "@/components/PageLayout";
+import PageHeader from "@/components/PageHeader";
 
 export default function InvitesPage() {
   return (
-    <div className="container mx-auto py-8">
-      <div className="max-w-4xl mx-auto">
-        <h1 className="text-3xl font-bold mb-8">Gerenciar Convites</h1>
-        <InvitesManagement />
+    <PageLayout>
+      <PageHeader
+        title="Gerenciar Convites"
+        description="Gerencie suas solicitações e convites de participação em grupos"
+        breadcrumbItems={[
+          { label: "Convites" }
+        ]}
+      />
+      <div className="container mx-auto px-4 py-6">
+        <div className="max-w-4xl mx-auto">
+          <InvitesManagement />
+        </div>
       </div>
-    </div>
+    </PageLayout>
   );
 }

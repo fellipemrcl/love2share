@@ -7,7 +7,7 @@ import { AdminButton } from "@/components/AdminButton";
 
 const Header = () => {
   return (
-    <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 shadow-sm">
+    <header className="relative z-40 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 shadow-sm">
       <div className="container flex h-14 items-center justify-between px-4 py-2">
         <MainNavigationMenu />
         <div className="flex items-center gap-4">

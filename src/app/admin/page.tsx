@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation'
 import { isAdmin } from '@/lib/admin'
 import AdminDashboard from '@/components/AdminDashboard'
+import PageLayout from '@/components/PageLayout'
 
 export default async function AdminPage() {
   const adminStatus = await isAdmin()
@@ -9,5 +10,9 @@ export default async function AdminPage() {
     redirect('/')
   }
 
-  return <AdminDashboard />
+  return (
+    <PageLayout>
+      <AdminDashboard />
+    </PageLayout>
+  )
 }

@@ -130,14 +130,7 @@ export default function FindGroupsClient({ initialStreamings }: FindGroupsClient
   }, [fetchGroups]);
 
   return (
-    <div className="container mx-auto p-6">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">Encontrar Grupos</h1>
-        <p className="text-muted-foreground">
-          Encontre grupos de streaming criados por outros usuários e participe!
-        </p>
-      </div>
-
+    <div>
       {/* Filtros */}
       <div className="flex flex-col sm:flex-row gap-4 mb-6">
         <div className="relative flex-1">

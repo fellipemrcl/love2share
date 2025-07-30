@@ -2,6 +2,8 @@ import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import prisma from "@/lib/prisma";
 import FindGroupsClient from "@/components/FindGroupsClient";
+import PageLayout from "@/components/PageLayout";
+import PageHeader from "@/components/PageHeader";
 
 export default async function FindGroupsPage() {
   const user = await currentUser();
@@ -34,5 +36,21 @@ export default async function FindGroupsPage() {
     monthlyPrice: s.monthlyPrice || undefined,
   }));
 
-  return <FindGroupsClient initialStreamings={streamings} />;
+  return (
+    <PageLayout>
+      <PageHeader
+        title="Encontrar Grupos"
+        description="Descubra grupos de compartilhamento de streaming disponíveis"
+        showBackButton={true}
+        backHref="/groups"
+        breadcrumbItems={[
+          { label: "Grupos", href: "/groups" },
+          { label: "Encontrar" }
+        ]}
+      />
+      <div className="container mx-auto px-4 py-6">
+        <FindGroupsClient initialStreamings={streamings} />
+      </div>
+    </PageLayout>
+  );
 }

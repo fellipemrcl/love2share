@@ -243,14 +243,7 @@ export default function MyGroupsClient() {
   }, [fetchGroups]);
 
   return (
-    <div className="container mx-auto p-6">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">Meus Grupos</h1>
-        <p className="text-muted-foreground">
-          Todos os grupos dos quais você faz parte
-        </p>
-      </div>
-
+    <div>
       {loading ? (
         <div className="text-center py-12">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto"></div>
