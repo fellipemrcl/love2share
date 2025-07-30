@@ -10,6 +10,7 @@ import GroupManagement from '../AdminDashboard/GroupManagement'
 import { SystemHealth } from '../AdminDashboard/SystemHealth'
 import { AdminScripts } from '../AdminDashboard/AdminScripts'
 import { AdminManagement } from '../AdminDashboard/AdminManagement'
+import AccessDataManagement from '../AccessDataManagement/AccessDataManagement'
 
 interface DashboardStats {
   totalUsers: number
@@ -110,6 +111,7 @@ export default function AdminDashboard() {
           <TabsTrigger value="users">Usuários</TabsTrigger>
           <TabsTrigger value="streamings">Streamings</TabsTrigger>
           <TabsTrigger value="groups">Grupos</TabsTrigger>
+          <TabsTrigger value="access-data">Dados de Acesso</TabsTrigger>
           <TabsTrigger value="scripts">Scripts</TabsTrigger>
           <TabsTrigger value="admins">Administradores</TabsTrigger>
           <TabsTrigger value="system">Sistema</TabsTrigger>
@@ -158,6 +160,10 @@ export default function AdminDashboard() {
 
         <TabsContent value="groups">
           <GroupManagement />
+        </TabsContent>
+
+        <TabsContent value="access-data">
+          <AccessDataManagement />
         </TabsContent>
 
         <TabsContent value="scripts">

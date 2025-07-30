@@ -77,14 +77,30 @@ export async function GET() {
       },
     });
 
-    const groups = userGroups.map(ug => ({
-      ...ug.streamingGroup,
-      userRole: ug.role,
-      isOwner: ug.role === 'OWNER',
-      isAdmin: ug.role === 'ADMIN' || ug.role === 'OWNER',
-      canManage: ug.role === 'OWNER' || ug.role === 'ADMIN',
-      availableSlots: ug.streamingGroup.maxMembers - ug.streamingGroup._count.streamingGroupUsers,
-      currentUserId: dbUser.id, // Adicionar ID do usuário atual
+    const groups = await Promise.all(userGroups.map(async ug => {
+      // Para admins/owners, buscar quantos membros precisam de dados de acesso
+      let pendingMembersCount = undefined;
+      if (ug.role === 'OWNER' || ug.role === 'ADMIN') {
+        const pendingMembers = await prisma.streamingGroupUser.count({
+          where: {
+            streamingGroupId: ug.streamingGroup.id,
+            role: 'MEMBER',
+            accessDataStatus: { in: ['PENDING', 'SENT'] },
+          },
+        });
+        pendingMembersCount = pendingMembers;
+      }
+
+      return {
+        ...ug.streamingGroup,
+        userRole: ug.role,
+        isOwner: ug.role === 'OWNER',
+        isAdmin: ug.role === 'ADMIN' || ug.role === 'OWNER',
+        canManage: ug.role === 'OWNER' || ug.role === 'ADMIN',
+        availableSlots: ug.streamingGroup.maxMembers - ug.streamingGroup._count.streamingGroupUsers,
+        currentUserId: dbUser.id,
+        pendingMembersCount,
+      };
     }));
 
     return NextResponse.json({ groups });

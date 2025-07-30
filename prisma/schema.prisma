@@ -41,8 +41,13 @@ model StreamingGroupUser {
   user                  User           @relation(fields: [userId], references: [id])
   userId                String
   role                  StreamingGroupRole @default(MEMBER)
+  accessDataStatus      AccessDataStatus @default(PENDING)
+  accessDataSentAt      DateTime?
+  accessDataConfirmedAt DateTime?
+  accessDataDeadline    DateTime?
   createdAt             DateTime       @default(now())
   updatedAt             DateTime       @updatedAt
+  accessDataDeliveries  AccessDataDelivery[]
 
   @@unique([streamingGroupId, userId])
 }
@@ -74,6 +79,34 @@ enum JoinRequestStatus {
   PENDING
   APPROVED
   REJECTED
+}
+
+enum AccessDataStatus {
+  PENDING         // Aguardando envio dos dados pelo admin
+  SENT            // Dados enviados pelo admin, aguardando confirmação
+  CONFIRMED       // Membro confirmou recebimento e funcionamento
+  OVERDUE         // Prazo de 24h expirado sem envio
+}
+
+model AccessDataDelivery {
+  id                    String         @id @default(uuid())
+  streamingGroupUser    StreamingGroupUser @relation(fields: [streamingGroupUserId], references: [id])
+  streamingGroupUserId  String
+  deliveryType          AccessDataDeliveryType
+  content               String         // Dados de acesso ou mensagem de convite
+  isInviteLink          Boolean        @default(false)
+  sentAt                DateTime       @default(now())
+  confirmedAt           DateTime?
+  notes                 String?
+  createdAt             DateTime       @default(now())
+  updatedAt             DateTime       @updatedAt
+}
+
+enum AccessDataDeliveryType {
+  CREDENTIALS         // Login e senha
+  INVITE_LINK        // Link de convite
+  ACCOUNT_SHARING    // Compartilhamento de conta existente
+  INSTRUCTIONS       // Instruções especiais
 }
 
 model Streaming {

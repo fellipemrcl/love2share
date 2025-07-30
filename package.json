@@ -7,7 +7,8 @@
     "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "check-overdue": "tsx scripts/check-overdue-access-data.ts"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.24.0",

@@ -122,9 +122,9 @@ export async function PATCH(
       }
 
       // Usar transação para aprovar a solicitação e adicionar o usuário ao grupo
-      const result = await prisma.$transaction([
+      const result = await prisma.$transaction(async (tx) => {
         // Atualizar o status da solicitação
-        prisma.groupJoinRequest.update({
+        const updatedRequest = await tx.groupJoinRequest.update({
           where: { id: requestId },
           data: {
             status: 'APPROVED',
@@ -132,16 +132,24 @@ export async function PATCH(
             respondedAt: new Date(),
             respondedById: dbUser.id,
           },
-        }),
-        // Adicionar o usuário ao grupo
-        prisma.streamingGroupUser.create({
+        });
+
+        // Adicionar o usuário ao grupo com prazo de 24h para envio dos dados
+        const deadline = new Date();
+        deadline.setHours(deadline.getHours() + 24);
+
+        const membership = await tx.streamingGroupUser.create({
           data: {
             streamingGroupId: groupId,
             userId: joinRequest.userId,
             role: 'MEMBER',
+            accessDataStatus: 'PENDING',
+            accessDataDeadline: deadline,
           },
-        }),
-      ]);
+        });
+
+        return [updatedRequest, membership];
+      });
 
       return NextResponse.json({
         message: "Solicitação aprovada com sucesso!",

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import PendingInvitesBadge from "@/components/PendingInvitesBadge";
+import PendingAccessDataBadge from "@/components/PendingAccessDataBadge";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -61,6 +62,19 @@ const MainNavigationMenu = () => {
                     </div>
                     <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
                       Gerencie suas solicitações e convites de grupos
+                    </p>
+                  </Link>
+                </NavigationMenuLink>
+              </li>
+              <li>
+                <NavigationMenuLink asChild>
+                  <Link href="/groups/access-data">
+                    <div className="text-sm font-medium leading-none flex items-center">
+                      Dados de Acesso
+                      <PendingAccessDataBadge />
+                    </div>
+                    <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                      Confirme o recebimento dos dados de streaming
                     </p>
                   </Link>
                 </NavigationMenuLink>
