@@ -97,6 +97,9 @@ export async function POST(request: NextRequest) {
       
       if (otherMembers.length === 0) {
         // Grupo vazio, pode deletar completamente
+        await prisma.groupJoinRequest.deleteMany({
+          where: { streamingGroupId: group.id }
+        })
         await prisma.streamingGroupStreaming.deleteMany({
           where: { streamingGroupId: group.id }
         })

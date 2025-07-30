@@ -88,6 +88,14 @@ export async function POST() {
       for (const group of user.createdGroups) {
         if (group._count.streamingGroupUsers <= 1) {
           // Se o grupo só tem o criador, pode deletar o grupo inteiro
+          await prisma.groupJoinRequest.deleteMany({
+            where: { streamingGroupId: group.id }
+          })
+          
+          await prisma.streamingGroupStreaming.deleteMany({
+            where: { streamingGroupId: group.id }
+          })
+          
           await prisma.streamingGroupUser.deleteMany({
             where: { streamingGroupId: group.id }
           })

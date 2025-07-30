@@ -175,6 +175,11 @@ export async function DELETE(
 
     // Deletar todas as relações primeiro
     await prisma.$transaction(async (tx) => {
+      // Remover todas as solicitações de entrada pendentes
+      await tx.groupJoinRequest.deleteMany({
+        where: { streamingGroupId: id },
+      });
+
       // Remover todas as contas de streaming do grupo
       await tx.streamingGroupStreaming.deleteMany({
         where: { streamingGroupId: id },
