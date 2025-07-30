@@ -14,7 +14,7 @@ export async function GET(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { id: groupId } = params;
+    const { id: groupId } = await params;
 
     // Verificar se o usuário existe no banco
     const dbUser = await prisma.user.findUnique({
