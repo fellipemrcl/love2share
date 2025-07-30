@@ -86,75 +86,116 @@ export default function GroupAccessDataDashboard() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
-        <span className="ml-2">Carregando...</span>
+      <div className="container mx-auto p-6">
+        <div className="flex items-center justify-center h-64">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+          <span className="ml-3 text-muted-foreground">Carregando dados...</span>
+        </div>
       </div>
     )
   }
 
   if (selectedGroup) {
     return (
-      <GroupAccessDataManagement 
-        groupId={selectedGroup.id}
-        groupName={selectedGroup.name}
-        onClose={() => setSelectedGroup(null)}
-      />
+      <div className="container mx-auto p-6">
+        <GroupAccessDataManagement 
+          groupId={selectedGroup.id}
+          groupName={selectedGroup.name}
+          onClose={() => setSelectedGroup(null)}
+        />
+      </div>
     )
   }
 
   return (
-    <div className="space-y-6">
-      {/* Resumo */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div className="container mx-auto p-6 space-y-8">
+      <div className="flex items-center justify-between">
+        <div className="space-y-1">
+          <h1 className="text-3xl font-bold tracking-tight">Dados de Acesso</h1>
+          <p className="text-muted-foreground">
+            Gerencie e confirme dados de acesso dos grupos de streaming
+          </p>
+        </div>
+        <Badge variant="outline" className="h-8 px-3">
+          <Users className="h-4 w-4 mr-2" />
+          {groups.length} {groups.length === 1 ? 'Grupo' : 'Grupos'}
+        </Badge>
+      </div>
+
+      {/* Dashboard Stats Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <Card>
-          <CardContent className="p-4">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total de Grupos</CardTitle>
+            <Users className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
             <div className="text-2xl font-bold">{groups.length}</div>
-            <div className="text-sm text-muted-foreground">Total de Grupos</div>
+            <p className="text-xs text-muted-foreground mt-1">
+              Todos os grupos que você participa
+            </p>
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="p-4">
-            <div className="text-2xl font-bold text-blue-600">{adminGroups.length}</div>
-            <div className="text-sm text-muted-foreground">Administrando</div>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Administrando</CardTitle>
+            <Shield className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{adminGroups.length}</div>
+            <p className="text-xs text-muted-foreground mt-1">
+              Grupos onde você é admin/proprietário
+            </p>
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="p-4">
-            <div className="text-2xl font-bold text-green-600">{memberGroups.length}</div>
-            <div className="text-sm text-muted-foreground">Como Membro</div>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Como Membro</CardTitle>
+            <UserIcon className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{memberGroups.length}</div>
+            <p className="text-xs text-muted-foreground mt-1">
+              Grupos onde você é apenas membro
+            </p>
           </CardContent>
         </Card>
       </div>
 
       {/* Conteúdo Principal */}
-      <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as 'member' | 'admin')}>
-        <TabsList>
+      <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as 'member' | 'admin')} className="space-y-6">
+        <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="member" className="flex items-center gap-2">
             <UserIcon className="w-4 h-4" />
             Como Membro ({memberGroups.length})
           </TabsTrigger>
           {adminGroups.length > 0 && (
             <TabsTrigger value="admin" className="flex items-center gap-2">
-              <Users className="w-4 h-4" />
+              <Shield className="w-4 h-4" />
               Como Administrador ({adminGroups.length})
             </TabsTrigger>
           )}
         </TabsList>
 
-        <TabsContent value="member" className="space-y-4">
+        <TabsContent value="member" className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Confirmação de Dados de Acesso</CardTitle>
+              <CardTitle className="flex items-center gap-2">
+                <UserIcon className="h-5 w-5" />
+                Confirmação de Dados de Acesso
+              </CardTitle>
               <CardDescription>
                 Confirme o recebimento dos dados de acesso dos grupos onde você é membro
               </CardDescription>
             </CardHeader>
             <CardContent>
               {memberGroups.length === 0 ? (
-                <div className="text-center py-8 text-muted-foreground">
-                  <UserIcon className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
-                  <p>Você não é membro de nenhum grupo</p>
+                <div className="text-center py-12">
+                  <UserIcon className="w-16 h-16 mx-auto mb-4 text-muted-foreground/50" />
+                  <h3 className="text-lg font-medium mb-2">Nenhum grupo como membro</h3>
+                  <p className="text-muted-foreground">
+                    Você não é membro de nenhum grupo atualmente
+                  </p>
                 </div>
               ) : (
                 <MemberAccessDataConfirmation />
@@ -163,11 +204,11 @@ export default function GroupAccessDataDashboard() {
           </Card>
         </TabsContent>
 
-        <TabsContent value="admin" className="space-y-4">
+        <TabsContent value="admin" className="space-y-6">
           {adminGroups.length === 0 ? (
             <Card>
-              <CardContent className="p-8 text-center">
-                <Users className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
+              <CardContent className="p-12 text-center">
+                <Shield className="w-16 h-16 mx-auto mb-4 text-muted-foreground/50" />
                 <h3 className="text-lg font-medium mb-2">Nenhum grupo para administrar</h3>
                 <p className="text-muted-foreground">
                   Você não é administrador ou proprietário de nenhum grupo
@@ -175,55 +216,59 @@ export default function GroupAccessDataDashboard() {
               </CardContent>
             </Card>
           ) : (
-            <>
-              <Card>
-                <CardHeader>
-                  <CardTitle>Grupos que Você Administra</CardTitle>
-                  <CardDescription>
-                    Gerencie os dados de acesso dos membros dos seus grupos
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                    {adminGroups.map((group) => (
-                      <Card key={group.id} className="hover:shadow-md transition-shadow cursor-pointer"
-                            onClick={() => setSelectedGroup(group)}>
-                        <CardContent className="p-4">
-                          <div className="flex items-start justify-between mb-3">
-                            <div className="flex-1">
-                              <h3 className="font-semibold text-lg">{group.name}</h3>
-                              {group.description && (
-                                <p className="text-sm text-muted-foreground mt-1">
-                                  {group.description}
-                                </p>
-                              )}
-                            </div>
-                            <Badge variant={getRoleBadgeVariant(group.userRole)} 
-                                   className="flex items-center gap-1">
-                              {getRoleIcon(group.userRole)}
-                              {group.userRole}
-                            </Badge>
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Shield className="h-5 w-5" />
+                  Grupos que Você Administra
+                </CardTitle>
+                <CardDescription>
+                  Gerencie os dados de acesso dos membros dos seus grupos
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                  {adminGroups.map((group) => (
+                    <Card key={group.id} className="hover:shadow-lg transition-all duration-200 cursor-pointer border-2 hover:border-primary/20"
+                          onClick={() => setSelectedGroup(group)}>
+                      <CardHeader className="pb-3">
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1">
+                            <CardTitle className="text-lg">{group.name}</CardTitle>
+                            {group.description && (
+                              <CardDescription className="mt-2">
+                                {group.description}
+                              </CardDescription>
+                            )}
                           </div>
-                          
-                          {group.pendingMembersCount !== undefined && group.pendingMembersCount > 0 && (
-                            <Alert className="mt-3">
-                              <AlertTriangle className="w-4 h-4" />
-                              <AlertDescription>
-                                {group.pendingMembersCount} membro(s) precisam de dados de acesso
-                              </AlertDescription>
-                            </Alert>
-                          )}
-                          
-                          <Button variant="outline" className="w-full mt-3">
-                            Gerenciar Dados de Acesso
-                          </Button>
-                        </CardContent>
-                      </Card>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            </>
+                          <Badge variant={getRoleBadgeVariant(group.userRole)} 
+                                 className="flex items-center gap-1 shrink-0 ml-2">
+                            {getRoleIcon(group.userRole)}
+                            {group.userRole}
+                          </Badge>
+                        </div>
+                      </CardHeader>
+                      
+                      <CardContent className="space-y-3">
+                        {group.pendingMembersCount !== undefined && group.pendingMembersCount > 0 && (
+                          <Alert className="border-destructive/50 bg-destructive/5">
+                            <AlertTriangle className="w-4 h-4 text-destructive" />
+                            <AlertDescription className="text-destructive">
+                              {group.pendingMembersCount} membro(s) precisam de dados de acesso
+                            </AlertDescription>
+                          </Alert>
+                        )}
+                        
+                        <Button variant="outline" className="w-full group">
+                          Gerenciar Dados de Acesso
+                          <Shield className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
           )}
         </TabsContent>
       </Tabs>

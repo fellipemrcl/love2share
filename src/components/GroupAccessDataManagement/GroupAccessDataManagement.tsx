@@ -138,18 +138,49 @@ export default function GroupAccessDataManagement({
     }
   }
 
+  const getDeliveryTypeLabel = (type: string) => {
+    switch (type) {
+      case 'CREDENTIALS': return 'Credenciais'
+      case 'INVITE_LINK': return 'Link de Convite'
+      case 'ACCOUNT_SHARING': return 'Compartilhamento'
+      case 'INSTRUCTIONS': return 'Instruções'
+      default: return type
+    }
+  }
+
   const pendingMembers = pendingData.filter(item => item.status === 'PENDING' || item.status === 'SENT')
   const overdueMembers = pendingData.filter(item => item.isOverdue)
 
   if (loading) {
-    return <div className="flex justify-center p-8">Carregando...</div>
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <div className="space-y-1">
+            <h2 className="text-2xl font-bold tracking-tight flex items-center gap-2">
+              <Users className="w-6 h-6" />
+              Dados de Acesso - {groupName}
+            </h2>
+            <p className="text-muted-foreground">Carregando informações dos membros...</p>
+          </div>
+          {onClose && (
+            <Button variant="outline" onClick={onClose}>
+              Voltar
+            </Button>
+          )}
+        </div>
+        <div className="flex items-center justify-center h-64">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+          <span className="ml-3 text-muted-foreground">Carregando dados...</span>
+        </div>
+      </div>
+    )
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-2xl font-bold flex items-center gap-2">
+        <div className="space-y-1">
+          <h2 className="text-2xl font-bold tracking-tight flex items-center gap-2">
             <Users className="w-6 h-6" />
             Dados de Acesso - {groupName}
           </h2>
@@ -159,46 +190,73 @@ export default function GroupAccessDataManagement({
         </div>
         {onClose && (
           <Button variant="outline" onClick={onClose}>
-            Fechar
+            Voltar
           </Button>
         )}
       </div>
 
-      {/* Resumo */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      {/* Dashboard Stats Cards */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
         <Card>
-          <CardContent className="p-4">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Membros</CardTitle>
+            <Users className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
             <div className="text-2xl font-bold">{pendingData.length}</div>
-            <div className="text-sm text-muted-foreground">Total Membros</div>
+            <p className="text-xs text-muted-foreground mt-1">
+              Membros no grupo
+            </p>
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="p-4">
-            <div className="text-2xl font-bold text-yellow-600">{pendingMembers.length}</div>
-            <div className="text-sm text-muted-foreground">Precisam Dados</div>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Precisam Dados</CardTitle>
+            <Clock className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-orange-600">{pendingMembers.length}</div>
+            <p className="text-xs text-muted-foreground mt-1">
+              Aguardando dados de acesso
+            </p>
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="p-4">
-            <div className="text-2xl font-bold text-red-600">{overdueMembers.length}</div>
-            <div className="text-sm text-muted-foreground">Vencidos</div>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Vencidos</CardTitle>
+            <AlertTriangle className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-destructive">{overdueMembers.length}</div>
+            <p className="text-xs text-muted-foreground mt-1">
+              Prazo de 24h expirado
+            </p>
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="p-4">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Confirmados</CardTitle>
+            <CheckCircle className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
             <div className="text-2xl font-bold text-green-600">
               {pendingData.filter(item => item.status === 'CONFIRMED').length}
             </div>
-            <div className="text-sm text-muted-foreground">Confirmados</div>
+            <p className="text-xs text-muted-foreground mt-1">
+              Dados confirmados pelos membros
+            </p>
           </CardContent>
         </Card>
       </div>
 
-      {/* Botão para enviar dados */}
+      {/* Formulário para enviar dados */}
       {pendingMembers.length > 0 && (
         <Card>
           <CardHeader>
-            <CardTitle>Enviar Dados de Acesso</CardTitle>
+            <CardTitle className="flex items-center gap-2">
+              <Send className="h-5 w-5" />
+              Enviar Dados de Acesso
+            </CardTitle>
             <CardDescription>
               Envie os dados de acesso para os membros que estão aguardando
             </CardDescription>
@@ -326,48 +384,64 @@ export default function GroupAccessDataManagement({
           ) : (
             <div className="space-y-4">
               {pendingData.map((item) => (
-                <div
+                <Card
                   key={item.id}
-                  className={`p-4 border rounded-lg ${item.isOverdue ? 'border-red-200 bg-red-50' : 'border-border'}`}
+                  className={`${item.isOverdue ? 'border-destructive/50 bg-destructive/5' : ''}`}
                 >
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <User className="w-5 h-5" />
-                      <div>
-                        <div className="font-medium">{item.user.name}</div>
-                        <div className="text-sm text-muted-foreground">{item.user.email}</div>
-                      </div>
-                    </div>
-                    <div className="text-right space-y-2">
-                      {getStatusBadge(item.status, item.isOverdue)}
-                      <div className="text-sm text-muted-foreground">
-                        {formatTimeRemaining(item.hoursRemaining)}
-                      </div>
-                    </div>
-                  </div>
-                  
-                  {item.isOverdue && (
-                    <Alert className="mt-3">
-                      <AlertTriangle className="w-4 h-4" />
-                      <AlertDescription>
-                        O prazo de 24 horas para envio dos dados de acesso expirou!
-                      </AlertDescription>
-                    </Alert>
-                  )}
-                  
-                  {item.lastDelivery && (
-                    <div className="mt-3 p-2 bg-gray-50 rounded text-sm">
-                      <div className="font-medium">Última entrega:</div>
-                      <div>Tipo: {item.lastDelivery.deliveryType}</div>
-                      <div>Enviado: {new Date(item.lastDelivery.sentAt).toLocaleDateString('pt-BR')}</div>
-                      {item.lastDelivery.confirmedAt && (
-                        <div className="text-green-600">
-                          Confirmado: {new Date(item.lastDelivery.confirmedAt).toLocaleDateString('pt-BR')}
+                  <CardContent className="p-4">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <User className="w-5 h-5 text-muted-foreground" />
+                        <div>
+                          <div className="font-medium">{item.user.name}</div>
+                          <div className="text-sm text-muted-foreground">{item.user.email}</div>
                         </div>
-                      )}
+                      </div>
+                      <div className="text-right space-y-2">
+                        {getStatusBadge(item.status, item.isOverdue)}
+                        <div className="text-sm text-muted-foreground">
+                          {formatTimeRemaining(item.hoursRemaining)}
+                        </div>
+                      </div>
                     </div>
-                  )}
-                </div>
+                    
+                    {item.isOverdue && (
+                      <Alert className="mt-4 border-destructive/50 bg-destructive/5">
+                        <AlertTriangle className="w-4 h-4 text-destructive" />
+                        <AlertDescription className="text-destructive">
+                          O prazo de 24 horas para envio dos dados de acesso expirou!
+                        </AlertDescription>
+                      </Alert>
+                    )}
+                    
+                    {item.lastDelivery && (
+                      <div className="mt-4 p-3 bg-muted/50 rounded-lg border">
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-sm font-medium text-muted-foreground">Última Entrega</span>
+                          <Badge variant="outline" className="text-xs">
+                            {getDeliveryTypeLabel(item.lastDelivery.deliveryType)}
+                          </Badge>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <Send className="w-3 h-3 text-muted-foreground" />
+                            <span className="text-xs text-muted-foreground">
+                              Enviado em {new Date(item.lastDelivery.sentAt).toLocaleDateString('pt-BR')}
+                            </span>
+                          </div>
+                          {item.lastDelivery.confirmedAt && (
+                            <div className="flex items-center gap-1">
+                              <CheckCircle className="w-3 h-3 text-green-600" />
+                              <span className="text-xs text-green-600">
+                                Confirmado
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
               ))}
             </div>
           )}
