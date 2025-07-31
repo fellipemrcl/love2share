@@ -127,6 +127,7 @@ export async function GET() {
           select: {
             id: true,
             deliveryType: true,
+            content: true, // Campo com os dados de acesso reais
             isInviteLink: true,
             sentAt: true,
             confirmedAt: true,

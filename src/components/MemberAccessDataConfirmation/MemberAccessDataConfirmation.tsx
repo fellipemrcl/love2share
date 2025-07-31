@@ -24,6 +24,7 @@ interface MemberAccessData {
   recentDeliveries: {
     id: string
     deliveryType: string
+    content: string // Dados de acesso reais
     isInviteLink: boolean
     sentAt: Date
     confirmedAt?: Date
@@ -246,6 +247,46 @@ export default function MemberAccessDataConfirmation() {
                   </CardHeader>
 
                   <CardContent className="space-y-4">
+                    {/* Dados de acesso atuais - para itens que precisam confirmação */}
+                    {item.needsAction && item.recentDeliveries.length > 0 && (
+                      <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
+                        <div className="flex items-center gap-2 mb-3">
+                          <CheckCircle className="w-5 h-5 text-green-600" />
+                          <h4 className="font-semibold text-green-800">Dados de Acesso Recebidos</h4>
+                        </div>
+                        {(() => {
+                          const latestDelivery = item.recentDeliveries[0];
+                          return (
+                            <div className="space-y-3">
+                              <div className="flex items-center gap-2 text-sm text-green-700">
+                                <span className="font-medium">{getDeliveryTypeLabel(latestDelivery.deliveryType)}</span>
+                                {latestDelivery.isInviteLink && (
+                                  <Badge variant="outline" className="text-xs">Link de Convite</Badge>
+                                )}
+                              </div>
+                              
+                              <div className="bg-white p-3 rounded border">
+                                <div className="text-xs font-medium text-gray-600 mb-2">Dados de Acesso:</div>
+                                <div className="text-sm font-mono bg-gray-50 p-3 rounded border whitespace-pre-wrap break-all">
+                                  {latestDelivery.content}
+                                </div>
+                              </div>
+                              
+                              {latestDelivery.notes && (
+                                <div className="text-sm text-green-700">
+                                  <strong>Observações:</strong> {latestDelivery.notes}
+                                </div>
+                              )}
+                              
+                              <div className="text-xs text-green-600">
+                                Enviado em {new Date(latestDelivery.sentAt).toLocaleDateString('pt-BR')} às {new Date(latestDelivery.sentAt).toLocaleTimeString('pt-BR')}
+                              </div>
+                            </div>
+                          );
+                        })()}
+                      </div>
+                    )}
+
                     {/* Histórico de entregas recentes */}
                     {item.recentDeliveries.length > 0 && (
                       <div>
@@ -262,8 +303,23 @@ export default function MemberAccessDataConfirmation() {
                               {delivery.isInviteLink && (
                                 <Badge variant="outline" className="text-xs mb-2">Link de Convite</Badge>
                               )}
+                              
+                              {/* Dados de acesso */}
+                              <div className="mt-3 p-3 bg-white rounded border border-primary/20">
+                                <div className="text-xs font-medium text-muted-foreground mb-2">Dados de Acesso:</div>
+                                <div className="text-sm font-mono bg-gray-50 p-2 rounded border whitespace-pre-wrap break-all">
+                                  {delivery.content}
+                                </div>
+                              </div>
+                              
+                              {delivery.notes && (
+                                <div className="mt-2 text-xs text-muted-foreground">
+                                  <strong>Observações:</strong> {delivery.notes}
+                                </div>
+                              )}
+                              
                               {delivery.confirmedAt && (
-                                <div className="text-green-600 text-xs flex items-center gap-1">
+                                <div className="text-green-600 text-xs flex items-center gap-1 mt-2">
                                   <CheckCircle className="w-3 h-3" />
                                   Confirmado em {new Date(delivery.confirmedAt).toLocaleDateString('pt-BR')}
                                 </div>
