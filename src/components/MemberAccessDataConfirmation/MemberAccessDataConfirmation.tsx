@@ -163,7 +163,7 @@ export default function MemberAccessDataConfirmation() {
             <Clock className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-orange-600">{summary.needingConfirmation}</div>
+            <div className="text-2xl font-bold text-yellow-600 dark:text-yellow-400">{summary.needingConfirmation}</div>
             <p className="text-xs text-muted-foreground mt-1">
               Dados recebidos aguardando confirmação
             </p>
@@ -175,7 +175,7 @@ export default function MemberAccessDataConfirmation() {
             <CheckCircle className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-600">{summary.confirmed}</div>
+            <div className="text-2xl font-bold text-green-600 dark:text-green-400">{summary.confirmed}</div>
             <p className="text-xs text-muted-foreground mt-1">
               Dados confirmados como funcionais
             </p>
@@ -187,7 +187,7 @@ export default function MemberAccessDataConfirmation() {
             <AlertTriangle className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-gray-600">{summary.pending}</div>
+            <div className="text-2xl font-bold text-muted-foreground">{summary.pending}</div>
             <p className="text-xs text-muted-foreground mt-1">
               Aguardando dados do administrador
             </p>
@@ -249,36 +249,36 @@ export default function MemberAccessDataConfirmation() {
                   <CardContent className="space-y-4">
                     {/* Dados de acesso atuais - para itens que precisam confirmação */}
                     {item.needsAction && item.recentDeliveries.length > 0 && (
-                      <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
+                      <div className="p-4 bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800 rounded-lg">
                         <div className="flex items-center gap-2 mb-3">
-                          <CheckCircle className="w-5 h-5 text-green-600" />
-                          <h4 className="font-semibold text-green-800">Dados de Acesso Recebidos</h4>
+                          <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-400" />
+                          <h4 className="font-semibold text-green-800 dark:text-green-200">Dados de Acesso Recebidos</h4>
                         </div>
                         {(() => {
                           const latestDelivery = item.recentDeliveries[0];
                           return (
                             <div className="space-y-3">
-                              <div className="flex items-center gap-2 text-sm text-green-700">
+                              <div className="flex items-center gap-2 text-sm text-green-700 dark:text-green-300">
                                 <span className="font-medium">{getDeliveryTypeLabel(latestDelivery.deliveryType)}</span>
                                 {latestDelivery.isInviteLink && (
                                   <Badge variant="outline" className="text-xs">Link de Convite</Badge>
                                 )}
                               </div>
                               
-                              <div className="bg-white p-3 rounded border">
-                                <div className="text-xs font-medium text-gray-600 mb-2">Dados de Acesso:</div>
-                                <div className="text-sm font-mono bg-gray-50 p-3 rounded border whitespace-pre-wrap break-all">
+                              <div className="bg-background p-3 rounded border">
+                                <div className="text-xs font-medium text-muted-foreground mb-2">Dados de Acesso:</div>
+                                <div className="text-sm font-mono bg-muted/50 p-3 rounded border whitespace-pre-wrap break-all">
                                   {latestDelivery.content}
                                 </div>
                               </div>
                               
                               {latestDelivery.notes && (
-                                <div className="text-sm text-green-700">
+                                <div className="text-sm text-green-700 dark:text-green-300">
                                   <strong>Observações:</strong> {latestDelivery.notes}
                                 </div>
                               )}
                               
-                              <div className="text-xs text-green-600">
+                              <div className="text-xs text-green-600 dark:text-green-400">
                                 Enviado em {new Date(latestDelivery.sentAt).toLocaleDateString('pt-BR')} às {new Date(latestDelivery.sentAt).toLocaleTimeString('pt-BR')}
                               </div>
                             </div>
@@ -305,9 +305,9 @@ export default function MemberAccessDataConfirmation() {
                               )}
                               
                               {/* Dados de acesso */}
-                              <div className="mt-3 p-3 bg-white rounded border border-primary/20">
+                              <div className="mt-3 p-3 bg-background rounded border border-primary/20">
                                 <div className="text-xs font-medium text-muted-foreground mb-2">Dados de Acesso:</div>
-                                <div className="text-sm font-mono bg-gray-50 p-2 rounded border whitespace-pre-wrap break-all">
+                                <div className="text-sm font-mono bg-muted/50 p-2 rounded border whitespace-pre-wrap break-all">
                                   {delivery.content}
                                 </div>
                               </div>
@@ -319,7 +319,7 @@ export default function MemberAccessDataConfirmation() {
                               )}
                               
                               {delivery.confirmedAt && (
-                                <div className="text-green-600 text-xs flex items-center gap-1 mt-2">
+                                <div className="text-green-600 dark:text-green-400 text-xs flex items-center gap-1 mt-2">
                                   <CheckCircle className="w-3 h-3" />
                                   Confirmado em {new Date(delivery.confirmedAt).toLocaleDateString('pt-BR')}
                                 </div>
@@ -391,9 +391,9 @@ export default function MemberAccessDataConfirmation() {
                     {/* Status para itens já confirmados */}
                     {item.status === 'CONFIRMED' && item.confirmedAt && (
                       <div className="pt-4 border-t">
-                        <div className="flex items-center gap-2 p-3 bg-green-50 border border-green-200 rounded-lg">
-                          <CheckCircle className="w-4 h-4 text-green-600" />
-                          <span className="text-sm text-green-700">
+                        <div className="flex items-center gap-2 p-3 bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800 rounded-lg">
+                          <CheckCircle className="w-4 h-4 text-green-600 dark:text-green-400" />
+                          <span className="text-sm text-green-700 dark:text-green-300">
                             Confirmado em {new Date(item.confirmedAt).toLocaleDateString('pt-BR')}
                           </span>
                         </div>
@@ -403,9 +403,9 @@ export default function MemberAccessDataConfirmation() {
                     {/* Status para itens pendentes */}
                     {item.status === 'PENDING' && (
                       <div className="pt-4 border-t">
-                        <div className="flex items-center gap-2 p-3 bg-orange-50 border border-orange-200 rounded-lg">
-                          <Clock className="w-4 h-4 text-orange-600" />
-                          <span className="text-sm text-orange-700">
+                        <div className="flex items-center gap-2 p-3 bg-orange-50 dark:bg-orange-950 border border-orange-200 dark:border-orange-800 rounded-lg">
+                          <Clock className="w-4 h-4 text-orange-600 dark:text-orange-400" />
+                          <span className="text-sm text-orange-700 dark:text-orange-300">
                             Aguardando o administrador enviar os dados de acesso
                           </span>
                         </div>

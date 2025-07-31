@@ -65,11 +65,11 @@ export default function GroupAccessDataDashboard() {
   const getRoleIcon = (role: string) => {
     switch (role) {
       case 'OWNER':
-        return <Crown className="h-4 w-4 text-yellow-600" />
+        return <Crown className="h-4 w-4 text-yellow-600 dark:text-yellow-400" />
       case 'ADMIN':
-        return <Shield className="h-4 w-4 text-blue-600" />
+        return <Shield className="h-4 w-4 text-blue-600 dark:text-blue-400" />
       default:
-        return <UserIcon className="h-4 w-4 text-gray-600" />
+        return <UserIcon className="h-4 w-4 text-muted-foreground" />
     }
   }
 
