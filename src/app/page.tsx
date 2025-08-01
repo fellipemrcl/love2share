@@ -1,19 +1,27 @@
 import Header from "@/components/Header";
-import Main from "@/components/Main";
-//import { DevTokenHelper } from "@/components/DevTokenHelper";
-//import { TokenDebugger } from "@/components/TokenDebugger";
+import { 
+  HeroSection, 
+  FeaturesSection, 
+  HowItWorksSection, 
+  SavingsSection, 
+  TestimonialsSection,
+  CTASection, 
+  FooterSection 
+} from "@/components/HomePage";
 
 export default function Home() {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <div className="flex flex-col items-center justify-center flex-1 px-4 py-8">
-        <Main />
-        <div className="mt-8 w-full max-w-2xl">
-          {/* <DevTokenHelper />
-          <TokenDebugger /> */}
-        </div>
-      </div>
+      <main className="flex-1">
+        <HeroSection />
+        <FeaturesSection />
+        <HowItWorksSection />
+        <SavingsSection />
+        <TestimonialsSection />
+        <CTASection />
+      </main>
+      <FooterSection />
     </div>
   );
 }
