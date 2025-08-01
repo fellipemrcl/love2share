@@ -42,36 +42,36 @@ export default function AdminDashboard() {
 
   if (loading) {
     return (
-      <div className="container mx-auto p-6">
-        <div className="flex items-center justify-center h-64">
-          <div className="text-lg">Carregando dados do painel...</div>
+      <div className="container mx-auto p-4 sm:p-6">
+        <div className="flex items-center justify-center h-32 sm:h-64">
+          <div className="text-sm sm:text-lg">Carregando dados do painel...</div>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="container mx-auto p-6 space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="container mx-auto p-4 sm:p-6 space-y-4 sm:space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold">Painel de Administração</h1>
-          <p className="text-muted-foreground">
+          <h1 className="text-2xl sm:text-3xl font-bold">Painel de Administração</h1>
+          <p className="text-sm sm:text-base text-muted-foreground">
             Gerencie usuários, grupos e streamings da plataforma
           </p>
         </div>
-        <Badge variant="secondary" className="px-3 py-1">
+        <Badge variant="secondary" className="px-3 py-1 self-start sm:self-center">
           Admin
         </Badge>
       </div>
 
       {/* Dashboard Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total de Usuários</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats?.totalUsers || 0}</div>
+            <div className="text-xl sm:text-2xl font-bold">{stats?.totalUsers || 0}</div>
           </CardContent>
         </Card>
 
@@ -80,7 +80,7 @@ export default function AdminDashboard() {
             <CardTitle className="text-sm font-medium">Grupos Ativos</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats?.totalGroups || 0}</div>
+            <div className="text-xl sm:text-2xl font-bold">{stats?.totalGroups || 0}</div>
           </CardContent>
         </Card>
 
@@ -89,7 +89,7 @@ export default function AdminDashboard() {
             <CardTitle className="text-sm font-medium">Streamings Disponíveis</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats?.totalStreamings || 0}</div>
+            <div className="text-xl sm:text-2xl font-bold">{stats?.totalStreamings || 0}</div>
           </CardContent>
         </Card>
 
@@ -98,29 +98,31 @@ export default function AdminDashboard() {
             <CardTitle className="text-sm font-medium">Assinaturas Ativas</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats?.activeSubscriptions || 0}</div>
+            <div className="text-xl sm:text-2xl font-bold">{stats?.activeSubscriptions || 0}</div>
           </CardContent>
         </Card>
       </div>
 
       {/* Main Dashboard Tabs */}
       <Tabs defaultValue="overview" className="space-y-4">
-        <TabsList>
-          <TabsTrigger value="overview">Visão Geral</TabsTrigger>
-          <TabsTrigger value="users">Usuários</TabsTrigger>
-          <TabsTrigger value="streamings">Streamings</TabsTrigger>
-          <TabsTrigger value="groups">Grupos</TabsTrigger>
-          <TabsTrigger value="scripts">Scripts</TabsTrigger>
-          <TabsTrigger value="admins">Administradores</TabsTrigger>
-          <TabsTrigger value="system">Sistema</TabsTrigger>
-        </TabsList>
+        <div className="overflow-x-auto">
+          <TabsList className="grid w-full grid-cols-3 sm:grid-cols-4 lg:grid-cols-7 min-w-max">
+            <TabsTrigger value="overview" className="text-xs sm:text-sm">Visão Geral</TabsTrigger>
+            <TabsTrigger value="users" className="text-xs sm:text-sm">Usuários</TabsTrigger>
+            <TabsTrigger value="streamings" className="text-xs sm:text-sm">Streamings</TabsTrigger>
+            <TabsTrigger value="groups" className="text-xs sm:text-sm">Grupos</TabsTrigger>
+            <TabsTrigger value="scripts" className="text-xs sm:text-sm">Scripts</TabsTrigger>
+            <TabsTrigger value="admins" className="text-xs sm:text-sm">Administradores</TabsTrigger>
+            <TabsTrigger value="system" className="text-xs sm:text-sm">Sistema</TabsTrigger>
+          </TabsList>
+        </div>
 
         <TabsContent value="overview" className="space-y-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
             <Card>
               <CardHeader>
-                <CardTitle>Atividade Recente</CardTitle>
-                <CardDescription>
+                <CardTitle className="text-lg sm:text-xl">Atividade Recente</CardTitle>
+                <CardDescription className="text-sm">
                   Últimas ações realizadas na plataforma
                 </CardDescription>
               </CardHeader>
@@ -133,8 +135,8 @@ export default function AdminDashboard() {
 
             <Card>
               <CardHeader>
-                <CardTitle>Status do Sistema</CardTitle>
-                <CardDescription>
+                <CardTitle className="text-lg sm:text-xl">Status do Sistema</CardTitle>
+                <CardDescription className="text-sm">
                   Saúde geral da aplicação
                 </CardDescription>
               </CardHeader>

@@ -15,23 +15,23 @@ import {
 
 const MainNavigationMenu = () => {
   return (
-    <NavigationMenu viewport={false}>
-      <NavigationMenuList>
+    <NavigationMenu viewport={false} className="z-50">
+      <NavigationMenuList className="gap-1">
         <NavigationMenuItem>
           <NavigationMenuLink
             asChild
             className={navigationMenuTriggerStyle()}
           >
-            <Link href="/">Página inicial</Link>
+            <Link href="/" className="font-medium">Página inicial</Link>
           </NavigationMenuLink>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <NavigationMenuTrigger>Grupos</NavigationMenuTrigger>
+          <NavigationMenuTrigger className="font-medium">Grupos</NavigationMenuTrigger>
           <NavigationMenuContent>
-            <ul className="grid w-[400px] gap-2 p-4">
+            <ul className="grid w-[450px] gap-3 p-6">
               <li>
                 <NavigationMenuLink asChild>
-                  <Link href="/groups/find">
+                  <Link href="/groups/find" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
                     <div className="text-sm font-medium leading-none">
                       Encontrar grupos
                     </div>
@@ -43,7 +43,7 @@ const MainNavigationMenu = () => {
               </li>
               <li>
                 <NavigationMenuLink asChild>
-                  <Link href="/groups/my">
+                  <Link href="/groups/my" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
                     <div className="text-sm font-medium leading-none">
                       Meus grupos
                     </div>
@@ -55,8 +55,8 @@ const MainNavigationMenu = () => {
               </li>
               <li>
                 <NavigationMenuLink asChild>
-                  <Link href="/invites">
-                    <div className="text-sm font-medium leading-none flex items-center">
+                  <Link href="/invites" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
+                    <div className="text-sm font-medium leading-none flex items-center gap-2">
                       Convites
                       <PendingInvitesBadge />
                     </div>
@@ -68,8 +68,8 @@ const MainNavigationMenu = () => {
               </li>
               <li>
                 <NavigationMenuLink asChild>
-                  <Link href="/groups/access-data">
-                    <div className="text-sm font-medium leading-none flex items-center">
+                  <Link href="/groups/access-data" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
+                    <div className="text-sm font-medium leading-none flex items-center gap-2">
                       Dados de Acesso
                       <PendingAccessDataBadge />
                     </div>
@@ -87,7 +87,7 @@ const MainNavigationMenu = () => {
             asChild
             className={navigationMenuTriggerStyle()}
           >
-            <Link href="/savings">Minhas economias</Link>
+            <Link href="/savings" className="font-medium">Minhas economias</Link>
           </NavigationMenuLink>
         </NavigationMenuItem>
         <NavigationMenuItem>
@@ -95,7 +95,7 @@ const MainNavigationMenu = () => {
             asChild
             className={navigationMenuTriggerStyle()}
           >
-            <Link href="/help">Ajuda</Link>
+            <Link href="/help" className="font-medium">Ajuda</Link>
           </NavigationMenuLink>
         </NavigationMenuItem>
       </NavigationMenuList>

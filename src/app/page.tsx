@@ -5,9 +5,9 @@ import Main from "@/components/Main";
 
 export default function Home() {
   return (
-    <div className="h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col">
       <Header />
-      <div className="flex flex-col items-center justify-center flex-1">
+      <div className="flex flex-col items-center justify-center flex-1 px-4 py-8">
         <Main />
         <div className="mt-8 w-full max-w-2xl">
           {/* <DevTokenHelper />

@@ -65,9 +65,9 @@ export default function SavingsClient() {
 
   if (loading) {
     return (
-      <div className="container mx-auto p-6">
-        <div className="flex items-center justify-center h-64">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      <div className="container mx-auto p-4 sm:p-6">
+        <div className="flex items-center justify-center h-32 sm:h-64">
+          <div className="animate-spin rounded-full h-6 w-6 sm:h-8 sm:w-8 border-b-2 border-primary"></div>
         </div>
       </div>
     );
@@ -75,13 +75,13 @@ export default function SavingsClient() {
 
   if (!savingsData) {
     return (
-      <div className="container mx-auto p-6">
+      <div className="container mx-auto p-4 sm:p-6">
         <Card>
-          <CardContent className="p-6">
+          <CardContent className="p-4 sm:p-6">
             <div className="text-center">
-              <PiggyBank className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-              <h3 className="text-lg font-semibold mb-2">Nenhuma economia encontrada</h3>
-              <p className="text-muted-foreground">
+              <PiggyBank className="h-10 w-10 sm:h-12 sm:w-12 mx-auto mb-4 text-muted-foreground" />
+              <h3 className="text-base sm:text-lg font-semibold mb-2">Nenhuma economia encontrada</h3>
+              <p className="text-sm sm:text-base text-muted-foreground">
                 Você ainda não participa de nenhum grupo de compartilhamento.
               </p>
             </div>
@@ -92,16 +92,16 @@ export default function SavingsClient() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6 p-4 sm:p-6">
       {/* Cards de resumo */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Economia Mensal</CardTitle>
+            <CardTitle className="text-xs sm:text-sm font-medium">Economia Mensal</CardTitle>
             <TrendingDown className="h-4 w-4 text-green-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-600">
+            <div className="text-xl sm:text-2xl font-bold text-green-600">
               {formatCurrency(savingsData.totalMonthlySavings)}
             </div>
             <p className="text-xs text-muted-foreground">
@@ -112,11 +112,11 @@ export default function SavingsClient() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Economia Anual</CardTitle>
+            <CardTitle className="text-xs sm:text-sm font-medium">Economia Anual</CardTitle>
             <Calendar className="h-4 w-4 text-green-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-600">
+            <div className="text-xl sm:text-2xl font-bold text-green-600">
               {formatCurrency(savingsData.totalYearlySavings)}
             </div>
             <p className="text-xs text-muted-foreground">
@@ -127,11 +127,11 @@ export default function SavingsClient() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Gasto Atual</CardTitle>
+            <CardTitle className="text-xs sm:text-sm font-medium">Gasto Atual</CardTitle>
             <DollarSign className="h-4 w-4 text-blue-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
+            <div className="text-xl sm:text-2xl font-bold">
               {formatCurrency(savingsData.totalSharedPrice)}
             </div>
             <p className="text-xs text-muted-foreground">
@@ -142,11 +142,11 @@ export default function SavingsClient() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Seria sem Compartilhar</CardTitle>
+            <CardTitle className="text-xs sm:text-sm font-medium">Seria sem Compartilhar</CardTitle>
             <DollarSign className="h-4 w-4 text-red-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
+            <div className="text-xl sm:text-2xl font-bold">
               {formatCurrency(savingsData.totalOriginalPrice)}
             </div>
             <p className="text-xs text-muted-foreground">
@@ -159,41 +159,42 @@ export default function SavingsClient() {
       {/* Detalhes por streaming */}
       <Card>
         <CardHeader>
-          <CardTitle>Economia por Streaming</CardTitle>
-          <CardDescription>
+          <CardTitle className="text-lg sm:text-xl">Economia por Streaming</CardTitle>
+          <CardDescription className="text-sm">
             Veja quanto você está economizando em cada serviço
           </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
             {savingsData.streamingSavings.map((streaming, index) => (
-              <div key={index} className="flex items-center justify-between p-4 border rounded-lg">
-                <div className="flex items-center gap-4">
+              <div key={index} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 border rounded-lg gap-4">
+                <div className="flex items-center space-x-3">
                   {streaming.logoUrl && (
-                    <Image
-                      src={streaming.logoUrl}
-                      alt={streaming.streamingName}
-                      width={40}
-                      height={40}
-                      className="rounded object-cover"
-                    />
+                    <div className="relative w-8 h-8 sm:w-10 sm:h-10 flex-shrink-0">
+                      <Image
+                        src={streaming.logoUrl}
+                        alt={streaming.streamingName}
+                        fill
+                        className="object-contain rounded"
+                      />
+                    </div>
                   )}
-                  <div>
-                    <h3 className="font-semibold">{streaming.streamingName}</h3>
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <Users className="h-4 w-4" />
+                  <div className="min-w-0 flex-1">
+                    <h3 className="text-sm sm:text-base font-medium truncate">{streaming.streamingName}</h3>
+                    <div className="flex items-center space-x-2 text-xs sm:text-sm text-muted-foreground">
+                      <Users className="h-3 w-3 sm:h-4 sm:w-4" />
                       <span>{streaming.groupSize}/{streaming.maxMembers} membros</span>
                     </div>
                   </div>
                 </div>
                 
-                <div className="text-right">
-                  <div className="flex items-center gap-2 mb-1">
-                    <Badge variant="outline" className="text-red-600">
+                <div className="flex flex-col sm:text-right space-y-2">
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-2 text-sm">
+                    <Badge variant="outline" className="text-red-600 text-xs">
                       {formatCurrency(streaming.originalPrice)}
                     </Badge>
-                    <span className="text-muted-foreground">→</span>
-                    <Badge variant="outline" className="text-blue-600">
+                    <span className="text-muted-foreground hidden sm:inline">→</span>
+                    <Badge variant="outline" className="text-blue-600 text-xs">
                       {formatCurrency(streaming.sharedPrice)}
                     </Badge>
                   </div>
@@ -213,30 +214,30 @@ export default function SavingsClient() {
       {/* Projeção de economia */}
       <Card>
         <CardHeader>
-          <CardTitle>Projeção de Economia</CardTitle>
-          <CardDescription>
+          <CardTitle className="text-lg sm:text-xl">Projeção de Economia</CardTitle>
+          <CardDescription className="text-sm">
             Veja o impacto das suas economias ao longo do tempo
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div className="text-center p-4 border rounded-lg">
-              <div className="text-2xl font-bold text-green-600 mb-1">
+              <div className="text-xl sm:text-2xl font-bold text-green-600 mb-1">
                 {formatCurrency(savingsData.totalMonthlySavings * 3)}
               </div>
-              <div className="text-sm text-muted-foreground">Em 3 meses</div>
+              <div className="text-xs sm:text-sm text-muted-foreground">Em 3 meses</div>
             </div>
             <div className="text-center p-4 border rounded-lg">
-              <div className="text-2xl font-bold text-green-600 mb-1">
+              <div className="text-xl sm:text-2xl font-bold text-green-600 mb-1">
                 {formatCurrency(savingsData.totalMonthlySavings * 6)}
               </div>
-              <div className="text-sm text-muted-foreground">Em 6 meses</div>
+              <div className="text-xs sm:text-sm text-muted-foreground">Em 6 meses</div>
             </div>
             <div className="text-center p-4 border rounded-lg">
-              <div className="text-2xl font-bold text-green-600 mb-1">
+              <div className="text-xl sm:text-2xl font-bold text-green-600 mb-1">
                 {formatCurrency(savingsData.totalYearlySavings)}
               </div>
-              <div className="text-sm text-muted-foreground">Em 1 ano</div>
+              <div className="text-xs sm:text-sm text-muted-foreground">Em 1 ano</div>
             </div>
           </div>
         </CardContent>

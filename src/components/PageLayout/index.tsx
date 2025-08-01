@@ -14,7 +14,7 @@ const PageLayout = ({ children, showHeader = true, showFab = true }: PageLayoutP
   return (
     <div className="min-h-screen flex flex-col">
       {showHeader && <Header />}
-      <main className="flex-1">
+      <main className="flex-1 overflow-x-hidden">
         {children}
       </main>
       {showFab && <FloatingActionButton />}
