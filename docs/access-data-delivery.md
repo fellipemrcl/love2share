@@ -12,8 +12,7 @@ Quando um administrador aprova uma solicitação de entrada em um grupo:
 
 ### 2. Envio de Dados pelo Administrador
 O administrador tem até 24 horas para enviar os dados através de:
-- **Página Admin**: `/admin/access-data`
-- **Dashboard Admin**: Tab "Dados de Acesso"
+- **Página de Grupos**: `/groups/access-data`
 
 Tipos de entrega disponíveis:
 - `CREDENTIALS`: Login e senha do serviço
@@ -111,7 +110,7 @@ Confirma recebimento dos dados.
 ## Componentes React
 
 ### `AccessDataManagement`
-- **Local**: `/admin/access-data`
+- **Local**: `/groups/access-data` (aba Administrador)
 - **Uso**: Administradores gerenciarem envio de dados
 - **Recursos**: 
   - Lista de membros pendentes
@@ -133,8 +132,8 @@ Confirma recebimento dos dados.
 ### `PendingAccessDataBadge`
 Badge que aparece no menu de navegação mostrando quantos dados precisam ser confirmados pelo membro.
 
-### Integração com Dashboard Admin
-Nova aba "Dados de Acesso" no dashboard administrativo para acesso rápido.
+### Integração com Navegação
+Funcionalidade acessível através do menu "Grupos > Dados de Acesso" na navegação principal.
 
 ## Automação e Manutenção
 
