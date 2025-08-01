@@ -290,6 +290,659 @@
       "_type": "workspace"
     },
     {
+      "_id": "req_streamings_list",
+      "parentId": "fld_streamings",
+      "modified": 1690372435100,
+      "created": 1690372435100,
+      "url": "{{ _.base_url }}/api/streamings",
+      "name": "Listar Streamings Ativos",
+      "description": "Lista todos os streamings ativos (endpoint simplificado)",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.clerk_token }}"
+      },
+      "metaSortKey": -1690372435100,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "fld_streamings",
+      "parentId": "wrk_love2share",
+      "modified": 1690372435100,
+      "created": 1690372435100,
+      "name": "Streamings API",
+      "description": "Endpoint para listar streamings ativos",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1690372434000,
+      "_type": "request_group"
+    },
+    {
+      "_id": "req_groups_create",
+      "parentId": "fld_groups",
+      "modified": 1690372435200,
+      "created": 1690372435200,
+      "url": "{{ _.base_url }}/api/groups",
+      "name": "1. Criar Grupo",
+      "description": "Cria um novo grupo de compartilhamento",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"streamingId\": \"{{ _.streaming_id }}\",\n  \"maxMembers\": 4\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.clerk_token }}"
+      },
+      "metaSortKey": -1690372435200,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_groups_list",
+      "parentId": "fld_groups",
+      "modified": 1690372435201,
+      "created": 1690372435201,
+      "url": "{{ _.base_url }}/api/groups",
+      "name": "2. Listar Todos os Grupos",
+      "description": "Lista todos os grupos disponíveis",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.clerk_token }}"
+      },
+      "metaSortKey": -1690372435201,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_groups_my",
+      "parentId": "fld_groups",
+      "modified": 1690372435202,
+      "created": 1690372435202,
+      "url": "{{ _.base_url }}/api/groups/my",
+      "name": "3. Meus Grupos",
+      "description": "Lista os grupos do usuário atual",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.clerk_token }}"
+      },
+      "metaSortKey": -1690372435202,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_groups_find",
+      "parentId": "fld_groups",
+      "modified": 1690372435203,
+      "created": 1690372435203,
+      "url": "{{ _.base_url }}/api/groups/find?streamingId={{ _.streaming_id }}",
+      "name": "4. Buscar Grupos",
+      "description": "Busca grupos disponíveis para um streaming específico",
+      "method": "GET",
+      "body": {},
+      "parameters": [
+        {
+          "name": "streamingId",
+          "value": "{{ _.streaming_id }}"
+        }
+      ],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.clerk_token }}"
+      },
+      "metaSortKey": -1690372435203,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_groups_join",
+      "parentId": "fld_groups",
+      "modified": 1690372435204,
+      "created": 1690372435204,
+      "url": "{{ _.base_url }}/api/groups/join",
+      "name": "5. Solicitar Entrada no Grupo",
+      "description": "Solicita entrada em um grupo existente",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"streamingGroupId\": \"{{ _.group_id }}\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.clerk_token }}"
+      },
+      "metaSortKey": -1690372435204,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_groups_leave",
+      "parentId": "fld_groups",
+      "modified": 1690372435205,
+      "created": 1690372435205,
+      "url": "{{ _.base_url }}/api/groups/leave",
+      "name": "6. Sair do Grupo",
+      "description": "Remove o usuário de um grupo",
+      "method": "DELETE",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"streamingGroupId\": \"{{ _.group_id }}\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.clerk_token }}"
+      },
+      "metaSortKey": -1690372435205,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_groups_join_requests",
+      "parentId": "fld_groups",
+      "modified": 1690372435206,
+      "created": 1690372435206,
+      "url": "{{ _.base_url }}/api/groups/{{ _.group_id }}/join-requests",
+      "name": "7. Listar Solicitações do Grupo",
+      "description": "Lista solicitações de entrada pendentes no grupo",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.clerk_token }}"
+      },
+      "metaSortKey": -1690372435206,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_groups_approve_request",
+      "parentId": "fld_groups",
+      "modified": 1690372435207,
+      "created": 1690372435207,
+      "url": "{{ _.base_url }}/api/groups/{{ _.group_id }}/join-requests/{{ _.request_id }}",
+      "name": "8. Aprovar/Rejeitar Solicitação",
+      "description": "Aprova ou rejeita uma solicitação de entrada",
+      "method": "PATCH",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"action\": \"APPROVED\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.clerk_token }}"
+      },
+      "metaSortKey": -1690372435207,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_groups_remove_member",
+      "parentId": "fld_groups",
+      "modified": 1690372435208,
+      "created": 1690372435208,
+      "url": "{{ _.base_url }}/api/groups/{{ _.group_id }}/members/{{ _.user_id }}",
+      "name": "9. Remover Membro",
+      "description": "Remove um membro do grupo",
+      "method": "DELETE",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.clerk_token }}"
+      },
+      "metaSortKey": -1690372435208,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_groups_access_data",
+      "parentId": "fld_groups",
+      "modified": 1690372435209,
+      "created": 1690372435209,
+      "url": "{{ _.base_url }}/api/groups/{{ _.group_id }}/access-data",
+      "name": "10. Dados de Acesso do Grupo",
+      "description": "Obtém dados de acesso compartilhados do grupo",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.clerk_token }}"
+      },
+      "metaSortKey": -1690372435209,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "fld_groups",
+      "parentId": "wrk_love2share",
+      "modified": 1690372435200,
+      "created": 1690372435200,
+      "name": "Groups API",
+      "description": "Endpoints para gerenciar grupos de compartilhamento",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1690372433000,
+      "_type": "request_group"
+    },
+    {
+      "_id": "req_access_data_send",
+      "parentId": "fld_access_data",
+      "modified": 1690372435300,
+      "created": 1690372435300,
+      "url": "{{ _.base_url }}/api/access-data",
+      "name": "1. Enviar Dados de Acesso",
+      "description": "Envia dados de acesso para um membro do grupo",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"streamingGroupUserId\": \"{{ _.group_user_id }}\",\n  \"deliveryType\": \"EMAIL\",\n  \"content\": \"email: user@example.com\\npassword: secret123\",\n  \"isInviteLink\": false,\n  \"notes\": \"Dados de acesso do Netflix Premium\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.clerk_token }}"
+      },
+      "metaSortKey": -1690372435300,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_access_data_list",
+      "parentId": "fld_access_data",
+      "modified": 1690372435301,
+      "created": 1690372435301,
+      "url": "{{ _.base_url }}/api/access-data",
+      "name": "2. Listar Dados de Acesso",
+      "description": "Lista todos os dados de acesso recebidos pelo usuário",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.clerk_token }}"
+      },
+      "metaSortKey": -1690372435301,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_access_data_confirm",
+      "parentId": "fld_access_data",
+      "modified": 1690372435302,
+      "created": 1690372435302,
+      "url": "{{ _.base_url }}/api/access-data/confirm",
+      "name": "3. Confirmar Recebimento",
+      "description": "Confirma o recebimento dos dados de acesso",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"accessDataDeliveryId\": \"{{ _.delivery_id }}\",\n  \"status\": \"RECEIVED\",\n  \"notes\": \"Dados recebidos e testados com sucesso\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.clerk_token }}"
+      },
+      "metaSortKey": -1690372435302,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_access_data_confirmations",
+      "parentId": "fld_access_data",
+      "modified": 1690372435303,
+      "created": 1690372435303,
+      "url": "{{ _.base_url }}/api/access-data/confirm",
+      "name": "4. Listar Confirmações",
+      "description": "Lista confirmações de recebimento",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.clerk_token }}"
+      },
+      "metaSortKey": -1690372435303,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "fld_access_data",
+      "parentId": "wrk_love2share",
+      "modified": 1690372435300,
+      "created": 1690372435300,
+      "name": "Access Data API",
+      "description": "Endpoints para gerenciar dados de acesso dos streamings",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1690372432000,
+      "_type": "request_group"
+    },
+    {
+      "_id": "req_join_requests_my",
+      "parentId": "fld_join_requests",
+      "modified": 1690372435400,
+      "created": 1690372435400,
+      "url": "{{ _.base_url }}/api/join-requests/my",
+      "name": "Minhas Solicitações",
+      "description": "Lista todas as solicitações de entrada do usuário",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.clerk_token }}"
+      },
+      "metaSortKey": -1690372435400,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "fld_join_requests",
+      "parentId": "wrk_love2share",
+      "modified": 1690372435400,
+      "created": 1690372435400,
+      "name": "Join Requests API",
+      "description": "Endpoints para gerenciar solicitações de entrada em grupos",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1690372431000,
+      "_type": "request_group"
+    },
+    {
+      "_id": "req_savings",
+      "parentId": "fld_savings",
+      "modified": 1690372435500,
+      "created": 1690372435500,
+      "url": "{{ _.base_url }}/api/savings",
+      "name": "Calcular Economia",
+      "description": "Calcula a economia do usuário com compartilhamentos",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.clerk_token }}"
+      },
+      "metaSortKey": -1690372435500,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "fld_savings",
+      "parentId": "wrk_love2share",
+      "modified": 1690372435500,
+      "created": 1690372435500,
+      "name": "Savings API",
+      "description": "Endpoints para calcular economia com compartilhamentos",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1690372430000,
+      "_type": "request_group"
+    },
+    {
+      "_id": "req_auth_test",
+      "parentId": "fld_auth",
+      "modified": 1690372435600,
+      "created": 1690372435600,
+      "url": "{{ _.base_url }}/api/auth/test",
+      "name": "Testar Autenticação",
+      "description": "Testa se o token de autenticação está funcionando",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ _.clerk_token }}"
+      },
+      "metaSortKey": -1690372435600,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "fld_auth",
+      "parentId": "wrk_love2share",
+      "modified": 1690372435600,
+      "created": 1690372435600,
+      "name": "Auth API",
+      "description": "Endpoints para testar autenticação",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1690372429000,
+      "_type": "request_group"
+    },
+    {
       "_id": "env_base",
       "parentId": "wrk_love2share",
       "modified": 1690372435000,
@@ -298,13 +951,23 @@
       "data": {
         "base_url": "http://localhost:3000",
         "clerk_token": "YOUR_CLERK_JWT_TOKEN_HERE",
-        "streaming_id": "STREAMING_ID_FROM_CREATE_RESPONSE"
+        "streaming_id": "STREAMING_ID_FROM_CREATE_RESPONSE",
+        "group_id": "GROUP_ID_FROM_CREATE_RESPONSE",
+        "user_id": "USER_ID_FROM_RESPONSE",
+        "request_id": "JOIN_REQUEST_ID_FROM_RESPONSE",
+        "group_user_id": "STREAMING_GROUP_USER_ID",
+        "delivery_id": "ACCESS_DATA_DELIVERY_ID"
       },
       "dataPropertyOrder": {
         "&": [
           "base_url",
           "clerk_token",
-          "streaming_id"
+          "streaming_id",
+          "group_id",
+          "user_id",
+          "request_id",
+          "group_user_id",
+          "delivery_id"
         ]
       },
       "color": null,
