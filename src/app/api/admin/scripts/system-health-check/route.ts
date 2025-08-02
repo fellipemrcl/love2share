@@ -22,7 +22,7 @@ export async function POST() {
       await prisma.$queryRaw`SELECT 1`
       healthReport.database.status = 'healthy'
       healthReport.database.details = { connection: 'OK' }
-    } catch (error) {
+    } catch {
       healthReport.database.status = 'error'
       healthReport.database.details = { error: 'Falha na conexão' }
     }
@@ -47,7 +47,7 @@ export async function POST() {
         testUsers,
         realUsers: userStats._count.id - testUsers
       }
-    } catch (error) {
+    } catch {
       healthReport.users.status = 'error'
       healthReport.users.details = { error: 'Erro ao buscar usuários' }
     }
@@ -83,7 +83,7 @@ export async function POST() {
         withMembers: groupsWithMembers,
         empty: groupStats._count.id - groupsWithMembers
       }
-    } catch (error) {
+    } catch {
       healthReport.groups.status = 'error'
       healthReport.groups.details = { error: 'Erro ao buscar grupos' }
     }
@@ -104,7 +104,7 @@ export async function POST() {
         active: activeStreamings,
         inactive: streamingStats._count.id - activeStreamings
       }
-    } catch (error) {
+    } catch {
       healthReport.streamings.status = 'error'
       healthReport.streamings.details = { error: 'Erro ao buscar streamings' }
     }
@@ -128,7 +128,7 @@ export async function POST() {
         confirmed: confirmedCount,
         overdue: overdueCount
       }
-    } catch (error) {
+    } catch {
       healthReport.accessData.status = 'error'
       healthReport.accessData.details = { error: 'Erro ao buscar dados de acesso' }
     }
