@@ -21,6 +21,10 @@ export const metadata: Metadata = {
   title: "Love2Share",
   description:
     "Love2Share is an app that allows you to share your streaming service accounts with friends and family.",
+  icons: {
+    icon: "/icon.svg",
+    apple: "/apple-touch-icon.png",
+  },
 };
 
 export default function RootLayout({
