@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Settings, Users, Crown, Shield, User, Plus, UserMinus, Loader2 } from "lucide-react";
+import { CreateGroupForm } from "../CreateGroupForm";
 
 interface User {
   id: string;
@@ -69,6 +70,8 @@ export default function MyGroupsClient() {
   const [leavingGroup, setLeavingGroup] = useState<string | null>(null);
   const [removingMember, setRemovingMember] = useState<string | null>(null);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+  const [isCreatingGroup, setIsCreatingGroup] = useState(false);
 
   const fetchGroups = useCallback(async () => {
     setLoading(true);
@@ -144,6 +147,44 @@ export default function MyGroupsClient() {
       console.error("Erro ao atualizar grupo:", error);
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handleCreateGroup = async (values: { streamingId: string; maxMembers: number }) => {
+    try {
+      setIsCreatingGroup(true);
+      console.log("Criando grupo:", values);
+      
+      const response = await fetch('/api/groups', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(values),
+      });
+      
+      if (response.ok) {
+        await response.json();
+        console.log("Grupo criado com sucesso!");
+        setIsCreateDialogOpen(false); // Fechar o modal
+        toast("Grupo criado com sucesso!", {
+          description: `Seu grupo foi criado e está pronto para receber membros.`,
+        });
+        fetchGroups(); // Recarregar a lista de grupos
+      } else {
+        const errorData = await response.json();
+        console.error("Erro ao criar grupo:", errorData.error);
+        toast.error("Erro ao criar grupo", {
+          description: errorData.error || "Ocorreu um erro inesperado. Tente novamente.",
+        });
+      }
+    } catch (error) {
+      console.error("Erro ao criar grupo:", error);
+      toast.error("Erro ao criar grupo", {
+        description: "Ocorreu um erro inesperado. Verifique sua conexão e tente novamente.",
+      });
+    } finally {
+      setIsCreatingGroup(false);
     }
   };
 
@@ -256,13 +297,21 @@ export default function MyGroupsClient() {
           <p className="text-muted-foreground mb-4">
             Você ainda não faz parte de nenhum grupo
           </p>
-          <Button>
+          <Button onClick={() => setIsCreateDialogOpen(true)}>
             <Plus className="h-4 w-4 mr-2" />
             Criar Primeiro Grupo
           </Button>
         </div>
       ) : (
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <>
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-xl font-semibold">Seus Grupos</h2>
+            <Button onClick={() => setIsCreateDialogOpen(true)}>
+              <Plus className="h-4 w-4 mr-2" />
+              Criar Novo Grupo
+            </Button>
+          </div>
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {groups.map((group) => (
             <Card key={group.id} className="relative">
               <CardHeader>
@@ -449,7 +498,21 @@ export default function MyGroupsClient() {
             </Card>
           ))}
         </div>
+        </>
       )}
+
+      {/* Diálogo de criação de grupos */}
+      <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Criar Novo Grupo</DialogTitle>
+            <DialogDescription>
+              Preencha as informações abaixo para criar um grupo e compartilhar sua conta de streaming.
+            </DialogDescription>
+          </DialogHeader>
+          <CreateGroupForm onSubmit={handleCreateGroup} isSubmitting={isCreatingGroup} />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
