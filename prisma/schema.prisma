@@ -13,11 +13,14 @@ model User {
   clerkId               String                @unique
   email                 String                @unique
   name                  String?
+  credits               Float                 @default(0)
   streamingGroupUsers   StreamingGroupUser[]
   ownedStreamingAccounts StreamingGroupStreaming[]
   createdGroups         StreamingGroup[]      @relation("GroupCreator")
   joinRequests          GroupJoinRequest[]
   respondedJoinRequests GroupJoinRequest[]    @relation("GroupJoinRequestResponder")
+  creditTransactions    CreditTransaction[]
+  paymentTransactions   PaymentTransaction[]
 }
 
 model StreamingGroup {
@@ -142,4 +145,51 @@ model StreamingGroupStreaming {
   updatedAt             DateTime       @updatedAt
 
   @@unique([streamingGroupId, streamingId])
+}
+
+model CreditTransaction {
+  id                    String         @id @default(uuid())
+  user                  User           @relation(fields: [userId], references: [id])
+  userId                String
+  type                  CreditTransactionType
+  amount                Float
+  description           String?
+  paymentTransactionId  String?
+  paymentTransaction    PaymentTransaction? @relation(fields: [paymentTransactionId], references: [id])
+  createdAt             DateTime       @default(now())
+  updatedAt             DateTime       @updatedAt
+}
+
+model PaymentTransaction {
+  id                    String         @id @default(uuid())
+  user                  User           @relation(fields: [userId], references: [id])
+  userId                String
+  orderNsu              String         @unique
+  amount                Float          // Valor em centavos
+  status                PaymentStatus  @default(PENDING)
+  paymentMethod         String?
+  transactionNsu        String?        // UUID da transação InfinitePay
+  invoiceSlug           String?
+  receiptUrl            String?
+  infinitePayData       Json?          // Dados completos do webhook
+  creditsAwarded        Float          @default(0)
+  creditTransactions    CreditTransaction[]
+  createdAt             DateTime       @default(now())
+  updatedAt             DateTime       @updatedAt
+}
+
+enum CreditTransactionType {
+  PURCHASE            // Compra de créditos
+  SPEND               // Gasto de créditos
+  REFUND              // Reembolso
+  BONUS               // Bônus/promoção
+  ADJUSTMENT          // Ajuste manual
+}
+
+enum PaymentStatus {
+  PENDING             // Aguardando pagamento
+  PAID                // Pago
+  FAILED              // Falhou
+  CANCELLED           // Cancelado
+  REFUNDED            // Reembolsado
 }
