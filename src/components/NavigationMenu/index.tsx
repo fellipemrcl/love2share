@@ -83,12 +83,47 @@ const MainNavigationMenu = () => {
           </NavigationMenuContent>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <NavigationMenuLink
-            asChild
-            className={navigationMenuTriggerStyle()}
-          >
-            <Link href="/savings" className="font-medium">Minhas economias</Link>
-          </NavigationMenuLink>
+          <NavigationMenuTrigger className="font-medium">Financeiro</NavigationMenuTrigger>
+          <NavigationMenuContent>
+            <ul className="grid w-[450px] gap-3 p-6">
+              <li>
+                <NavigationMenuLink asChild>
+                  <Link href="/credits" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
+                    <div className="text-sm font-medium leading-none">
+                      Comprar Créditos
+                    </div>
+                    <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                      Adicione créditos à sua conta para usar na plataforma
+                    </p>
+                  </Link>
+                </NavigationMenuLink>
+              </li>
+              <li>
+                <NavigationMenuLink asChild>
+                  <Link href="/credits/history" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
+                    <div className="text-sm font-medium leading-none">
+                      Histórico de Créditos
+                    </div>
+                    <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                      Visualize suas transações e pagamentos
+                    </p>
+                  </Link>
+                </NavigationMenuLink>
+              </li>
+              <li>
+                <NavigationMenuLink asChild>
+                  <Link href="/savings" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
+                    <div className="text-sm font-medium leading-none">
+                      Minhas Economias
+                    </div>
+                    <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                      Veja quanto você está economizando com os compartilhamentos
+                    </p>
+                  </Link>
+                </NavigationMenuLink>
+              </li>
+            </ul>
+          </NavigationMenuContent>
         </NavigationMenuItem>
         <NavigationMenuItem>
           <NavigationMenuLink

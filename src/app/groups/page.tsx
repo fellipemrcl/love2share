@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Search, Users, Settings } from "lucide-react";
 import Link from "next/link";
+import { CreditBalance } from "@/components/CreditBalance";
 
 export default async function GroupsPage() {
   const user = await currentUser();
@@ -25,6 +26,11 @@ export default async function GroupsPage() {
       />
       <div className="container mx-auto px-4 py-6">
         <div className="max-w-4xl mx-auto space-y-6">
+          {/* Saldo de Créditos */}
+          <div className="max-w-sm mx-auto">
+            <CreditBalance />
+          </div>
+
           {/* Ações rápidas */}
           <div className="grid md:grid-cols-2 gap-4">
             <Card>
