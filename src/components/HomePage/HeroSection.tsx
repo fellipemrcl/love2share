@@ -58,7 +58,7 @@ const HeroSection = () => {
             </p>
           </motion.div>
 
-          <motion.div
+                    <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
@@ -67,12 +67,12 @@ const HeroSection = () => {
             {isSignedIn ? (
               <>
                 <Link href="/groups/find">
-                  <Button size="lg" className="bg-white text-purple-600 hover:bg-purple-50 shadow-lg">
+                  <Button size="lg" className="bg-white text-purple-700 hover:bg-purple-50 hover:text-purple-800 shadow-xl border-2 border-purple-200 font-semibold transition-all duration-300">
                     Encontrar Grupos
                   </Button>
                 </Link>
                 <Link href="/groups/my">
-                  <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
+                  <Button size="lg" variant="outline" className="border-2 border-white/90 text-white bg-white/10 hover:bg-white hover:text-purple-700 backdrop-blur-sm font-semibold transition-all duration-300 shadow-lg">
                     Meus Grupos
                   </Button>
                 </Link>
@@ -80,12 +80,12 @@ const HeroSection = () => {
             ) : (
               <>
                 <SignInButton>
-                  <Button size="lg" className="bg-white text-purple-600 hover:bg-purple-50 shadow-lg">
+                  <Button size="lg" className="bg-white text-purple-700 hover:bg-purple-50 hover:text-purple-800 shadow-xl border-2 border-purple-200 font-semibold transition-all duration-300">
                     Começar Agora
                   </Button>
                 </SignInButton>
                 <Link href="#como-funciona">
-                  <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
+                  <Button size="lg" variant="outline" className="border-2 border-white/90 text-white bg-white/10 hover:bg-white hover:text-purple-700 backdrop-blur-sm font-semibold transition-all duration-300 shadow-lg">
                     Como Funciona
                   </Button>
                 </Link>

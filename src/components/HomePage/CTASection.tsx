@@ -83,7 +83,7 @@ const CTASection = () => {
                 <Link href="/groups/find">
                   <Button 
                     size="lg" 
-                    className="bg-white text-purple-600 hover:bg-purple-50 shadow-lg px-8 py-4 text-lg font-semibold"
+                    className="bg-white text-purple-700 hover:bg-purple-50 hover:text-purple-800 shadow-xl border-2 border-purple-200 px-8 py-4 text-lg font-semibold transition-all duration-300"
                   >
                     🔍 Encontrar Grupos
                   </Button>
@@ -92,7 +92,7 @@ const CTASection = () => {
                   <Button 
                     size="lg" 
                     variant="outline" 
-                    className="border-white text-white hover:bg-white/10 px-8 py-4 text-lg font-semibold"
+                    className="border-2 border-white/90 text-white bg-white/10 hover:bg-white hover:text-purple-700 backdrop-blur-sm px-8 py-4 text-lg font-semibold transition-all duration-300 shadow-lg"
                   >
                     📱 Meus Grupos
                   </Button>
@@ -102,7 +102,7 @@ const CTASection = () => {
               <SignInButton>
                 <Button 
                   size="lg" 
-                  className="bg-white text-purple-600 hover:bg-purple-50 shadow-lg px-8 py-4 text-lg font-semibold"
+                  className="bg-white text-purple-700 hover:bg-purple-50 hover:text-purple-800 shadow-xl border-2 border-purple-200 px-8 py-4 text-lg font-semibold transition-all duration-300"
                 >
                   ✨ Começar Agora - É Grátis!
                 </Button>
