@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Search, Users, DollarSign } from "lucide-react";
+import { Search, Users, DollarSign, Clock } from "lucide-react";
 
 interface Streaming {
   id: string;
@@ -44,6 +44,14 @@ interface GroupWithDetails {
   pricePerMember: number;
 }
 
+interface JoinRequest {
+  id: string;
+  streamingGroupId: string;
+  status: 'PENDING' | 'APPROVED' | 'REJECTED';
+  requestedAt: string;
+  respondedAt?: string;
+}
+
 interface FindGroupsClientProps {
   initialStreamings: Streaming[];
 }
@@ -54,6 +62,7 @@ export default function FindGroupsClient({ initialStreamings }: FindGroupsClient
   const [joining, setJoining] = useState<string | null>(null);
   const [search, setSearch] = useState("");
   const [selectedStreaming, setSelectedStreaming] = useState<string>("all");
+  const [pendingRequests, setPendingRequests] = useState<JoinRequest[]>([]);
 
   const fetchGroups = useCallback(async () => {
     setLoading(true);
@@ -77,6 +86,27 @@ export default function FindGroupsClient({ initialStreamings }: FindGroupsClient
     }
   }, [search, selectedStreaming]);
 
+  const fetchPendingRequests = useCallback(async () => {
+    try {
+      const response = await fetch('/api/join-requests/my');
+      const data = await response.json();
+
+      if (response.ok) {
+        // Filtrar apenas solicitações pendentes
+        const pending = data.joinRequests.filter((req: JoinRequest) => req.status === 'PENDING');
+        setPendingRequests(pending);
+      } else {
+        console.error(data.error || "Erro ao buscar solicitações");
+      }
+    } catch (error) {
+      console.error("Erro ao buscar solicitações:", error);
+    }
+  }, []);
+
+  const hasRequestPending = (groupId: string) => {
+    return pendingRequests.some(req => req.streamingGroupId === groupId);
+  };
+
   const joinGroup = async (groupId: string) => {
     setJoining(groupId);
     try {
@@ -99,8 +129,9 @@ export default function FindGroupsClient({ initialStreamings }: FindGroupsClient
             onClick: () => window.location.href = '/invites',
           },
         });
-        // Não remove o grupo da lista, apenas atualiza o estado
+        // Atualizar tanto os grupos quanto as solicitações pendentes
         fetchGroups();
+        fetchPendingRequests();
       } else {
         console.error(data.error || "Erro ao solicitar entrada no grupo");
         toast.error("Erro ao solicitar entrada no grupo", {
@@ -119,7 +150,8 @@ export default function FindGroupsClient({ initialStreamings }: FindGroupsClient
 
   useEffect(() => {
     fetchGroups();
-  }, [fetchGroups]);
+    fetchPendingRequests();
+  }, [fetchGroups, fetchPendingRequests]);
 
   useEffect(() => {
     const debounce = setTimeout(() => {
@@ -238,10 +270,20 @@ export default function FindGroupsClient({ initialStreamings }: FindGroupsClient
 
                 <Button
                   onClick={() => joinGroup(group.id)}
-                  disabled={joining === group.id}
+                  disabled={joining === group.id || hasRequestPending(group.id)}
                   className="w-full"
+                  variant={hasRequestPending(group.id) ? "secondary" : "default"}
                 >
-                  {joining === group.id ? "Enviando..." : "Solicitar Participação"}
+                  {joining === group.id ? (
+                    "Enviando..."
+                  ) : hasRequestPending(group.id) ? (
+                    <>
+                      <Clock className="h-4 w-4 mr-2" />
+                      Aguardando Aprovação
+                    </>
+                  ) : (
+                    "Solicitar Participação"
+                  )}
                 </Button>
               </CardContent>
             </Card>
